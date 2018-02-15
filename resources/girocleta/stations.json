@@ -1,0 +1,29 @@
+[
+  {
+    "id" : 1,
+    "name": "Biblioteca Antònia Adroher",
+    "location": {
+      "lat": 41.993628,
+      "lon": 2.809083
+    },
+    "capacity": 17
+  },
+  {
+    "id" : 2,
+    "name": "Ramon Folch",
+    "location": {
+      "lat": 41.986726,
+      "lon": 2.821839
+    },
+    "capacity": 28
+  },
+  {
+    "id" : 3,
+    "name": "Plaça de Catalunya",
+    "location": {
+      "lat": 41.982072,
+      "lon": 2.823376
+    },
+    "capacity": 50
+  }
+]
