@@ -49,7 +49,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapBotManCommands()
     {
-        Route::namespace($this->namespace)->group(base_path('routes/botman.php'));
+        Route::namespace($this->namespace)
+            ->group(base_path('routes/botman.php'));
     }
 
     /**

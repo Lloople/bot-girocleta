@@ -6,7 +6,8 @@
       "lat": 41.993628,
       "lon": 2.809083
     },
-    "capacity": 17
+    "capacity": 17,
+    "bikes": 8
   },
   {
     "id" : 2,
@@ -15,7 +16,8 @@
       "lat": 41.986726,
       "lon": 2.821839
     },
-    "capacity": 28
+    "capacity": 28,
+    "bikes": 11
   },
   {
     "id" : 3,
@@ -24,6 +26,7 @@
       "lat": 41.982072,
       "lon": 2.823376
     },
-    "capacity": 50
+    "capacity": 50,
+    "bikes": 2
   }
 ]

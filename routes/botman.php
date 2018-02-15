@@ -1,7 +1,11 @@
 <?php
 
-use App\Http\Controllers\BotManController;
-
 $botman = resolve('botman');
 
-$botman->hears('Hola|/start', BotManController::class.'@welcomeConversation');
+$botman->hears('/start|hola|afegir estacio', 'App\Http\Controllers\GirocletaController@welcomeConversation');
+
+$botman->hears('/station|^estaci[ó|o]|quina .* estaci[ó|o]', 'App\Http\Controllers\GirocletaController@checkStation');
+
+$botman->hears('afegir recordatori|/reminder', 'App\Http\Controllers\GirocletaController@reminderConversation');
+
+$botman->hears('/remove|/forget|(?:borrar?|treu(?:re)?|oblidar?) estaci[ó|o]', 'App\Http\Controllers\GirocletaController@forgetStation');

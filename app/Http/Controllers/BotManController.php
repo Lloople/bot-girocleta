@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Conversations\ReminderConversation;
 use App\Conversations\WelcomeConversation;
+use App\Girocleta\StationService;
 use BotMan\BotMan\BotMan;
 
 class BotManController extends Controller
@@ -24,15 +26,5 @@ class BotManController extends Controller
     public function tinker()
     {
         return view('tinker');
-    }
-
-    /**
-     * Loaded through routes/botman.php
-     *
-     * @param  BotMan $bot
-     */
-    public function welcomeConversation(BotMan $bot)
-    {
-        $bot->startConversation(new WelcomeConversation());
     }
 }
