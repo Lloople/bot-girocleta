@@ -37,6 +37,11 @@ class StationService
                 )
             )
         );
+
+        /**
+         * addMarker\(\d+,(\-?\d+(?:\.\d+)?,\s*\-?\d+(?:\.\d+)?),\d+,\d+\);
+         * html\[\d+\]=\'<div.*>(?P<id>[0-9]+)- (?<name>.*)<\/div><div>.*<\/div><div>Bicis lliures: (?<bikes>\d+).*Aparcaments lliures: (?<parkings>\d+).*\';
+         */
     }
 
     /**
