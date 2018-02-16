@@ -45,7 +45,7 @@ class WelcomeConversation extends Conversation
 
             $this->bot->userStorage()->save(['station_id' => $this->station->id]);
 
-            $this->station->getInfo($this->bot);
+            $this->station->replyInfo($this->bot);
         });
     }
 }

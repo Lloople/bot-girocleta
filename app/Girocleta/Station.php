@@ -47,13 +47,27 @@ class Station
         return Button::create($this->name)->value($this->id);
     }
 
-    public function getInfo(BotMan $bot)
+    public function replyInfo(BotMan $bot)
     {
         $bot->reply("La teva estació és {$this->name}.");
         $bot->reply("Queden {$this->getFreeSlots()} aparcaments lliures.");
         $bot->reply(
             OutgoingMessage::create($this->name)->withAttachment($this->location->getLocationAttachment())
         );
+    }
+
+    /**
+     * Load distance into location object.
+     *
+     * @param float $latitude
+     * @param float $longitude
+     * @return $this
+     */
+    public function withDistanceTo(float $latitude, float $longitude)
+    {
+        $this->distance = $this->location->getDistance($latitude, $longitude);
+
+        return $this;
     }
 
 }

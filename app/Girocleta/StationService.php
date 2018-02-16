@@ -66,4 +66,20 @@ class StationService
         return $this->all()->where('id', $id)->first();
     }
 
+    /**
+     * Get the nearest stations to the location.
+     * 
+     * @param float $latitude
+     * @param float $longitude
+     * @param int $limit
+     * @return \Illuminate\Support\Collection
+     */
+    public function getNearStations(float $latitude, float $longitude, int $limit = 3)
+    {
+        return $this->all()->each->withDistanceTo($latitude, $longitude)
+            ->sortBy('distance')
+            ->take($limit);
+    }
+
+
 }
