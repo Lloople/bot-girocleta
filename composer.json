@@ -1,11 +1,12 @@
 {
-    "name": "botman/studio",
-    "description": "BotMan Chatbot framework.",
+    "name": "lloople/bot-girocleta",
+    "description": "Bot de la Girocleta fet amb Laravel i BotMan.",
     "keywords": [
         "botman",
+        "laravel",
         "chatbot",
-        "framework",
-        "laravel"
+        "girocleta",
+        "girona"
     ],
     "license": "MIT",
     "type": "project",
