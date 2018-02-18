@@ -2,9 +2,8 @@
 
 namespace App\Girocleta;
 
-use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
+use App\Outgoing\OutgoingMessage;
 
 class Station
 {
@@ -47,13 +46,22 @@ class Station
         return Button::create($this->name)->value($this->id);
     }
 
-    public function replyInfo(BotMan $bot)
+    public function getInfo()
     {
-        $bot->reply("La teva estació és {$this->name}.");
-        $bot->reply("Queden {$this->getFreeSlots()} aparcaments lliures.");
-        $bot->reply(
-            OutgoingMessage::create($this->name)->withAttachment($this->location->getLocationAttachment())
-        );
+        $text = "{$this->name}: {$this->bikes} bicis lliures.";
+
+        if ($this->distance) {
+            $text .= $this->distance.'km';
+        }
+
+        return $text;
+    }
+
+    public function messageInfo()
+    {
+        $message = new OutgoingMessage('Aquí tens la informació sobre la teva estació');
+
+        return $message->addLink($this->getInfo(), $this->googleMapsLink());
     }
 
     /**
@@ -68,6 +76,17 @@ class Station
         $this->distance = $this->location->getDistance($latitude, $longitude);
 
         return $this;
+    }
+
+    public function googleMapsImage()
+    {
+        $token = config('services.google_maps.token');
+        return "https://maps.googleapis.com/maps/api/staticmap?key={$token}&markers=color:red|{$this->location->getLatitude()},{$this->location->getLongitude()}&size=360x360&zoom=13";
+    }
+
+    public function googleMapsLink()
+    {
+        return "https://www.google.com/maps/search/?api=1&query={$this->location->getLatitude()},{$this->location->getLongitude()}";
     }
 
 }

@@ -6,9 +6,9 @@ use App\Conversations\ReminderConversation;
 use App\Conversations\WelcomeConversation;
 use App\Girocleta\Station;
 use App\Girocleta\StationService;
+use App\Outgoing\OutgoingMessage;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Attachments\Location;
-use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 class GirocletaController extends Controller
 {
@@ -51,7 +51,7 @@ class GirocletaController extends Controller
             return $bot->reply('Sembla que encara no has seleccionat una estació. Escriu /start per fer-ho ara');
         }
 
-        $station->replyInfo($bot);
+        return $bot->reply($station->messageInfo());
     }
 
     /**
@@ -76,15 +76,14 @@ class GirocletaController extends Controller
 
         $nearStations = $stationService->getNearStations($location->getLatitude(), $location->getLongitude());
 
-        $bot->reply("Aquestes són les {$nearStations->count()} estacions que tens més a prop");
+        $message = new OutgoingMessage("Aquestes són les {$nearStations->count()} estacions que tens més a prop");
 
-        $nearStations->each(function (Station $station) use ($bot) {
+        $nearStations->each(function (Station $station) use ($message) {
 
-            $bot->reply($station->name . ': ' . $station->bikes . ' 🚲. ' . $station->distance . 'km');
-
-            $bot->reply(new OutgoingMessage($station->name, $station->location->getLocationAttachment()));
+            $message->addLink($station->getInfo(), $station->googleMapsLink());
 
         });
 
+        $bot->reply($message);
     }
 }
