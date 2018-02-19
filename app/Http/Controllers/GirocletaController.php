@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Conversations\ReminderConversation;
-use App\Conversations\WelcomeConversation;
+use App\Conversations\RegisterConversation;
 use App\Girocleta\Station;
-use App\Girocleta\StationService;
+use App\Services\StationService;
 use App\Outgoing\OutgoingMessage;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Attachments\Location;
@@ -18,9 +18,9 @@ class GirocletaController extends Controller
      *
      * @param  BotMan $bot
      */
-    public function welcomeConversation(BotMan $bot)
+    public function registerConversation(BotMan $bot)
     {
-        $bot->startConversation(new WelcomeConversation());
+        $bot->startConversation(new RegisterConversation());
     }
 
     /**
@@ -70,6 +70,12 @@ class GirocletaController extends Controller
         return $bot->reply("Els recordatoris deixaran de funcionar fins que en tornis a escollir una amb /start");
     }
 
+    /**
+     * Show the nearest locations to the user.
+     *
+     * @param \BotMan\BotMan\BotMan $bot
+     * @param \BotMan\BotMan\Messages\Attachments\Location $location
+     */
     public function nearStations(BotMan $bot, Location $location)
     {
         $stationService = new StationService();
