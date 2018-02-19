@@ -2,7 +2,7 @@
 
 namespace App\Drivers;
 
-use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
+use App\Outgoing\OutgoingMessage;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\Drivers\Telegram\TelegramDriver as BotManTelegramDriver;
 use Illuminate\Support\Collection;
@@ -17,13 +17,14 @@ class TelegramDriver extends BotManTelegramDriver
      * @param string|Question|OutgoingMessage $message
      * @param \BotMan\BotMan\Messages\Incoming\IncomingMessage $matchingMessage
      * @param array $additionalParameters
+     *
      * @return Response
      */
     public function buildServicePayload($message, $matchingMessage, $additionalParameters = [])
     {
         $parameters = parent::buildServicePayload($message, $matchingMessage, $additionalParameters);
 
-        if (method_exists($message, 'getActions') && count($message->getActions())) {
+        if ($this->haveCustomLinks($message)) {
             $parameters['reply_markup'] = json_encode([
                 'inline_keyboard' => $this->convertLinks($message->getActions()),
             ], true);
@@ -31,6 +32,13 @@ class TelegramDriver extends BotManTelegramDriver
 
         return $parameters;
 
+    }
+
+    private function haveCustomLinks($message)
+    {
+        return method_exists($message, 'getActions')
+            && $message instanceof OutgoingMessage
+            && count($message->getActions());
     }
 
     private function convertLinks(array $actions)
