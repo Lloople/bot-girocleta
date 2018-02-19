@@ -2,12 +2,12 @@
 
 namespace App\Conversations;
 
-use App\Girocleta\StationService;
+use App\Services\StationService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 
-class WelcomeConversation extends Conversation
+class RegisterConversation extends Conversation
 {
 
     const STATION_UNKNOWN = 'Em sap greu, però no sé de quina estació es tracta 🤔';
@@ -15,7 +15,7 @@ class WelcomeConversation extends Conversation
     /** @var \App\Girocleta\Station */
     protected $station;
 
-    /** @var \App\Girocleta\StationService  */
+    /** @var \App\Services\StationService  */
     protected $stationService;
 
     public function __construct()
@@ -31,8 +31,6 @@ class WelcomeConversation extends Conversation
     public function run()
     {
         $question = Question::create('Hola! Quina estació tens més a prop de casa?')
-            ->fallback(self::STATION_UNKNOWN)
-            ->callbackId('register_station')
             ->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
@@ -45,7 +43,7 @@ class WelcomeConversation extends Conversation
 
             $this->bot->userStorage()->save(['station_id' => $this->station->id]);
 
-            $this->station->replyInfo($this->bot);
+            return $this->say($this->station->messageInfo());
         });
     }
 }
