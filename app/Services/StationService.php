@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Girocleta;
+namespace App\Services;
+
+use App\Girocleta\Station;
 
 class StationService
 {

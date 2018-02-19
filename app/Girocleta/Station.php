@@ -50,7 +50,7 @@ class Station
     {
         $text = "{$this->name}: {$this->bikes} bicis lliures.";
 
-        if ($this->distance) {
+        if (isset($this->distance)) {
             $text .= $this->distance.'km';
         }
 
