@@ -4,10 +4,10 @@ namespace App\Conversations;
 
 use App\Models\Reminder;
 use App\Services\ReminderService;
+use App\Services\UserService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
-use Illuminate\Support\Facades\Log;
 
 class ReminderConversation extends Conversation
 {
@@ -19,18 +19,22 @@ class ReminderConversation extends Conversation
     /** @var \App\Services\ReminderService  */
     protected $reminderService;
 
+    /** @var \App\Services\UserService  */
+    protected $userService;
+
     /** @var string */
     protected $reminderType;
 
     /** @var string */
     protected $reminderTime;
 
-    /** @var string */
+    /** @var \Illuminate\Support\Collection */
     protected $reminderDays;
 
     public function __construct()
     {
         $this->reminderService = new ReminderService();
+        $this->userService = new UserService();
     }
 
     /**
@@ -49,8 +53,15 @@ class ReminderConversation extends Conversation
                 return $this->say(self::REMINDER_UNKNOWN);
             }
 
-            return $this->askTime();
+            return $this->askStation();
         });
+    }
+
+    public function askStation()
+    {
+        // TODO: Fer la pregunta per les estacions
+
+        return $this->askTime();
     }
 
     public function askType()
@@ -111,18 +122,11 @@ class ReminderConversation extends Conversation
     public function createReminder()
     {
         $reminder = new Reminder();
-        $reminder->user_id = $this->bot->getUser()->getId();
+        $reminder->user_id = $this->userService->getTelegramUser($this->bot->getUser()->getId())->id;
         $reminder->type = $this->reminderType;
         $reminder->time = $this->reminderTime;
 
-
-        $reminder->monday = $this->reminderDays->has('monday');
-        $reminder->tuesday = $this->reminderDays->has('tuesday');
-        $reminder->wednesday = $this->reminderDays->has('wednesday');
-        $reminder->thursday = $this->reminderDays->has('thursday');
-        $reminder->friday = $this->reminderDays->has('friday');
-        $reminder->saturday = $this->reminderDays->has('saturday');
-        $reminder->sunday = $this->reminderDays->has('sunday');
+        $reminder->setDays($this->reminderDays);
 
         $reminder->save();
 

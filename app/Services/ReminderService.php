@@ -15,7 +15,7 @@ class ReminderService
         'weekdays' => 'Entre setmana',
     ];
 
-    const POSSIBlE_TIME_FORMATS = [
+    const POSSIBLE_TIME_FORMATS = [
         'H:i',
         'h:i',
         'H:i a',
@@ -60,7 +60,7 @@ class ReminderService
     {
         $input = strtolower($input);
 
-        foreach (self::POSSIBlE_TIME_FORMATS as $format) {
+        foreach (self::POSSIBLE_TIME_FORMATS as $format) {
             try {
                 return Carbon::createFromFormat($format, $input)->format('H:i');
             } catch(\Exception $e) {}

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Reminder extends Model
 {
@@ -40,5 +41,18 @@ class Reminder extends Model
     public function getTypeStrAttribute()
     {
         return self::TYPES[$this->type];
+    }
+
+    public function setDays(Collection $days)
+    {
+        $this->monday = $days->has('monday');
+        $this->tuesday = $days->has('tuesday');
+        $this->wednesday = $days->has('wednesday');
+        $this->thursday = $days->has('thursday');
+        $this->friday = $days->has('friday');
+        $this->saturday = $days->has('saturday');
+        $this->sunday = $days->has('sunday');
+
+        return $this;
     }
 }

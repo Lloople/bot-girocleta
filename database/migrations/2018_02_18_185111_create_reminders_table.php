@@ -15,7 +15,8 @@ class CreateRemindersTable extends Migration
     {
         Schema::create('reminders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id')->nullable();
+            $table->integer('user_id')->unsigned();
+            $table->integer('station_id')->unsigned();
             $table->string('type');
             $table->time('time');
             $table->boolean('monday')->default(true);
@@ -29,6 +30,8 @@ class CreateRemindersTable extends Migration
             $table->timestamp('date_begin')->useCurrent();
             $table->timestamp('date_end')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
