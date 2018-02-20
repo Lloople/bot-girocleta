@@ -48,10 +48,10 @@ class Station
 
     public function getInfo()
     {
-        $text = "{$this->name}: {$this->bikes} bicis lliures.";
+        $text = "{$this->name} | {$this->bikes} 🚲 | ";
 
         if (isset($this->distance)) {
-            $text .= $this->distance.'km';
+            $text .= number_format($this->distance, 2).'km';
         }
 
         return $text;

@@ -25,7 +25,7 @@ class ReminderConversation extends Conversation
     /** @var string */
     protected $reminderType;
 
-    /** @var string */
+    /** @var \Illuminate\Support\Carbon */
     protected $reminderTime;
 
     /** @var \Illuminate\Support\Collection */
@@ -84,7 +84,7 @@ class ReminderConversation extends Conversation
     {
         return $this->ask('A quina hora vols que t\'ho recordi?', function (Answer $answer) {
 
-            $this->reminderTime = $this->reminderService->parseHoursFromInput($answer->getValue());
+            $this->reminderTime = $this->reminderService->parseHoursFromInput($answer->getText());
 
             if (! $this->reminderTime) {
                 return $this->say("No he entès la hora a la que vols que t'ho recordi, prova a escriure-ho així: ".date('H:i'));

@@ -9,7 +9,9 @@ class UserService
     {
         /**
          * TODO: Implement this method, we need some kind of middleware to
-         * TODO: load the user at the beggining and use it everywhere.
+         *       load the user at the beginning and use it everywhere.
+         *       Creating a reminder will not work until this issue gets resolved.
+         *
          */
 
         }

@@ -2,8 +2,6 @@
 
 $botman = resolve('botman');
 
-
-
 $botman->hears('/start|hola|afegir estacio', 'App\Http\Controllers\GirocletaController@registerConversation');
 
 $botman->hears('/station|^estaci[ó|o]|quina .* estaci[ó|o]', 'App\Http\Controllers\GirocletaController@checkStation');

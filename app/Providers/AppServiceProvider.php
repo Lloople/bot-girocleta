@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Drivers\TelegramDriver;
+use App\Drivers\TelegramLocationDriver;
 use BotMan\BotMan\Drivers\DriverManager;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         DriverManager::loadDriver(TelegramDriver::class);
+        DriverManager::loadDriver(TelegramLocationDriver::class);
     }
 }
