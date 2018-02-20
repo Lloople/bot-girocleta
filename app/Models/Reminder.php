@@ -28,11 +28,13 @@ class Reminder extends Model
 
         foreach(self::DAYS as $day => $name) {
             if ($this->$day) {
-                $days[] = $name;
+                $days[] = strtolower($name);
             }
         }
 
-        return implode(', ', $days);
+        $imploded = implode(', ', $days);
+
+        return substr_replace($imploded, ' i ', strrpos($imploded, ', '), 2);
     }
 
     public function getTypeStrAttribute()

@@ -54,21 +54,24 @@ class ReminderService
 
     public function parseDaysFromInput($input)
     {
+        $days = collect(Reminder::DAYS);
         if ($input === 'all') {
-            return array_keys(Reminder::DAYS);
+            return $days;
         }
 
         if ($input === 'weekend') {
-            return collect(Reminder::DAYS)->only('saturday', 'sunday')->keys()->toArray();
+            return $days->only('saturday', 'sunday');
         }
 
         if ($input === 'weekdays') {
-            return collect(Reminder::DAYS)->except('saturday', 'sunday')->keys()->toArray();
+            return $days->except('saturday', 'sunday');
         }
 
         return collect(Reminder::DAYS)->filter(function ($day) use ($input) {
+
             return str_contains(strtolower($input), strtolower($day));
-        })->keys()->toArray(); // NO VA. Aquesta casuistica està donant error tota l'estona
+
+        });
     }
 
 }

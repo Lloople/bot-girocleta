@@ -7,6 +7,7 @@ use App\Services\ReminderService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
+use Illuminate\Support\Facades\Log;
 
 class ReminderConversation extends Conversation
 {
@@ -50,7 +51,6 @@ class ReminderConversation extends Conversation
 
             return $this->askTime();
         });
-
     }
 
     public function askType()
@@ -92,7 +92,7 @@ class ReminderConversation extends Conversation
 
             $this->reminderDays = $this->reminderService->parseDaysFromInput($answer->getValue());
 
-            if (! count($this->reminderDays)) {
+            if (! $this->reminderDays->count()) {
                 return $this->say('Em sap greu, però no he entès quins dies vols que t\'ho recordi');
             }
 
@@ -100,7 +100,7 @@ class ReminderConversation extends Conversation
 
             $this->say('Molt bé! Això era tot el que necessitàvem, aquest és el teu nou recordatori:');
 
-            $this->say("Recorda'm {$reminder->type_str} els dies {$reminder->days_str} a les {$reminder->time}");
+            $this->say("Recorda'm {$reminder->type_str} el {$reminder->days_str} a les {$reminder->time}");
 
             $this->createReminder();
         });
@@ -114,13 +114,13 @@ class ReminderConversation extends Conversation
         $reminder->time = $this->reminderTime;
 
 
-        $reminder->monday = in_array('monday', $this->reminderDays);
-        $reminder->tuesday = in_array('tuesday', $this->reminderDays);
-        $reminder->wednesday = in_array('wednesday', $this->reminderDays);
-        $reminder->thursday = in_array('thursday', $this->reminderDays);
-        $reminder->friday = in_array('friday', $this->reminderDays);
-        $reminder->saturday = in_array('saturday', $this->reminderDays);
-        $reminder->sunday = in_array('sunday', $this->reminderDays);
+        $reminder->monday = $this->reminderDays->has('monday');
+        $reminder->tuesday = $this->reminderDays->has('tuesday');
+        $reminder->wednesday = $this->reminderDays->has('wednesday');
+        $reminder->thursday = $this->reminderDays->has('thursday');
+        $reminder->friday = $this->reminderDays->has('friday');
+        $reminder->saturday = $this->reminderDays->has('saturday');
+        $reminder->sunday = $this->reminderDays->has('sunday');
 
         $reminder->save();
 
