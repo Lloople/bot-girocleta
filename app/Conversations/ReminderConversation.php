@@ -90,7 +90,9 @@ class ReminderConversation extends Conversation
 
         return $this->ask($question, function (Answer $answer) {
 
-            $this->reminderDays = $this->reminderService->parseDaysFromInput($answer->getValue());
+            $this->reminderDays = $answer->isInteractiveMessageReply()
+                ? $this->reminderService->parseDaysFromInput($answer->getValue())
+                : $this->reminderService->parseDaysFromInput($answer->getText());
 
             if (! $this->reminderDays->count()) {
                 return $this->say('Em sap greu, però no he entès quins dies vols que t\'ho recordi');

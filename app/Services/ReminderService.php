@@ -15,6 +15,19 @@ class ReminderService
         'weekdays' => 'Entre setmana',
     ];
 
+    const POSSIBlE_TIME_FORMATS = [
+        'H:i',
+        'h:i',
+        'H:i a',
+        'h:i a',
+        'H i',
+        'h i',
+        'H',
+        'H a',
+        'h',
+        'h a',
+    ];
+
     public function all()
     {
         return Reminder::TYPES;
@@ -45,16 +58,21 @@ class ReminderService
 
     public function parseHoursFromInput($input)
     {
-        try {
-            return Carbon::parse($input)->format('H:i'); // NO VA. Això no va, està agafant la hora actual
-        } catch(\Exception $e) {
-            return null;
+        $input = strtolower($input);
+
+        foreach (self::POSSIBlE_TIME_FORMATS as $format) {
+            try {
+                return Carbon::createFromFormat($format, $input)->format('H:i');
+            } catch(\Exception $e) {}
         }
+
+        return null;
     }
 
     public function parseDaysFromInput($input)
     {
         $days = collect(Reminder::DAYS);
+
         if ($input === 'all') {
             return $days;
         }
@@ -67,7 +85,7 @@ class ReminderService
             return $days->except('saturday', 'sunday');
         }
 
-        return collect(Reminder::DAYS)->filter(function ($day) use ($input) {
+        return $days->filter(function ($day) use ($input) {
 
             return str_contains(strtolower($input), strtolower($day));
 
