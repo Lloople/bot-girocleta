@@ -9,6 +9,9 @@ class StationService
 
     private $stations;
 
+    const REGEX_LOCATION = '/addMarker\(\d+,(\-?\d+(?:\.\d+)?,\s*\-?\d+(?:\.\d+)?),\d+,\d+\);/';
+    const REGEX_STATION = "/html\[\d+\]=\'<div.*>(?P<id>[0-9]+)- ?(?<name>.*)<\/div><div>.*<\/div><div>Bicis lliures: (?<bikes>\d+).*Aparcaments lliures: (?<parkings>\d+).*\';/";
+
     /**
      * Load all the station just one time per instance.
      *
@@ -17,8 +20,8 @@ class StationService
     public function all()
     {
         if (! $this->stations) {
-            $this->stations = $this->getStations()->map(function ($stationJson) {
-                return Station::createFromPayload($stationJson);
+            $this->stations = collect($this->getStations())->map(function ($station) {
+                return Station::createFromPayload($station);
             });
         }
 
@@ -26,24 +29,31 @@ class StationService
     }
 
     /**
-     * Get tehe stations. Temporal result.
+     * Get the stations. Temporal result.
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     private function getStations()
     {
-        return collect(
-            json_decode(
-                file_get_contents(
-                    resource_path('girocleta/stations.json')
-                )
-            )
-        );
+        $html = file_get_contents('http://girocleta.cat');
 
-        /**
-         * addMarker\(\d+,(\-?\d+(?:\.\d+)?,\s*\-?\d+(?:\.\d+)?),\d+,\d+\);
-         * html\[\d+\]=\'<div.*>(?P<id>[0-9]+)- (?<name>.*)<\/div><div>.*<\/div><div>Bicis lliures: (?<bikes>\d+).*Aparcaments lliures: (?<parkings>\d+).*\';
-         */
+        $locations = preg_match_all(self::REGEX_LOCATION, $html, $matches) ? $matches[1] : [];
+
+        preg_match_all(self::REGEX_STATION, $html, $matches);
+
+        return array_map(function ($index) use ($matches, $locations) {
+
+            [$latitude, $longitude] = explode(',', $locations[$index]);
+
+            return [
+                'id' => $matches['id'][$index],
+                'name' => $matches['name'][$index],
+                'parkings' => $matches['parkings'][$index],
+                'bikes' => $matches['bikes'][$index],
+                'latitude' => $latitude,
+                'longitude' => $longitude
+            ];
+        }, array_keys($locations));
     }
 
     /**

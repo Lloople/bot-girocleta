@@ -2,8 +2,8 @@
 
 namespace App\Girocleta;
 
-use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use App\Outgoing\OutgoingMessage;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 
 class Station
 {
@@ -18,25 +18,20 @@ class Station
     public $location;
 
     /** @var int */
-    public $capacity;
+    public $parkings;
 
     /** @var int */
     public $bikes;
-
-    public function getFreeSlots()
-    {
-        return $this->capacity - $this->bikes;
-    }
 
     public static function createFromPayload($payload)
     {
         $station = new Station();
 
-        $station->id = $payload->id;
-        $station->name = $payload->name;
-        $station->location = new Location($payload->location->lat, $payload->location->lon);
-        $station->capacity = $payload->capacity;
-        $station->bikes = $payload->bikes;
+        $station->id = $payload['id'];
+        $station->name = $payload['name'];
+        $station->location = new Location($payload['latitude'], $payload['longitude']);
+        $station->parkings = $payload['parkings'];
+        $station->bikes = $payload['bikes'];
 
         return $station;
     }
@@ -48,10 +43,10 @@ class Station
 
     public function getInfo()
     {
-        $text = "{$this->name} | {$this->bikes} 🚲 | ";
+        $text = "{$this->name} | {$this->bikes} 🚲";
 
         if (isset($this->distance)) {
-            $text .= number_format($this->distance, 2).'km';
+            $text .= ' | ' . number_format($this->distance, 2) . 'km';
         }
 
         return $text;
@@ -69,6 +64,7 @@ class Station
      *
      * @param float $latitude
      * @param float $longitude
+     *
      * @return $this
      */
     public function withDistanceTo(float $latitude, float $longitude)
@@ -76,12 +72,6 @@ class Station
         $this->distance = $this->location->getDistance($latitude, $longitude);
 
         return $this;
-    }
-
-    public function googleMapsImage()
-    {
-        $token = config('services.google_maps.token');
-        return "https://maps.googleapis.com/maps/api/staticmap?key={$token}&markers=color:red|{$this->location->getLatitude()},{$this->location->getLongitude()}&size=360x360&zoom=13";
     }
 
     public function googleMapsLink()
