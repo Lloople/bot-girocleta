@@ -4,6 +4,7 @@ namespace App\Conversations;
 
 use App\Models\Reminder;
 use App\Services\ReminderService;
+use App\Services\StationService;
 use App\Services\UserService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
@@ -22,8 +23,14 @@ class ReminderConversation extends Conversation
     /** @var \App\Services\UserService  */
     protected $userService;
 
+    /** @var \App\Services\StationService  */
+    protected $stationService;
+
     /** @var string */
     protected $reminderType;
+
+    /** @var \App\Girocleta\Station */
+    protected $reminderStation;
 
     /** @var \Illuminate\Support\Carbon */
     protected $reminderTime;
@@ -35,6 +42,7 @@ class ReminderConversation extends Conversation
     {
         $this->reminderService = new ReminderService();
         $this->userService = new UserService();
+        $this->stationService = new StationService();
     }
 
     /**
@@ -59,9 +67,18 @@ class ReminderConversation extends Conversation
 
     public function askStation()
     {
-        // TODO: Fer la pregunta per les estacions
+        $question = Question::create('De quina parada voldràs la informació?')->addButtons($this->stationService->asButtons());
 
-        return $this->askTime();
+        return $this->ask($question, function (Answer $answer) {
+
+            $this->reminderStation = $this->stationService->find($answer->getValue());
+
+            if (! $this->reminderStation) {
+                return $this->say('No sé quina estació és');
+            }
+
+            return $this->askTime();
+        });
     }
 
     public function askType()
@@ -123,6 +140,7 @@ class ReminderConversation extends Conversation
     {
         $reminder = new Reminder();
         $reminder->user_id = $this->userService->getTelegramUser($this->bot->getUser()->getId())->id;
+        $reminder->station_id = $this->reminderStation->id;
         $reminder->type = $this->reminderType;
         $reminder->time = $this->reminderTime;
 
