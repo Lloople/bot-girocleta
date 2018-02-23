@@ -93,5 +93,10 @@ class StationService
             ->take($limit);
     }
 
+    public function getUserStation()
+    {
+        return $this->find(auth()->user()->station_id);
+    }
+
 
 }

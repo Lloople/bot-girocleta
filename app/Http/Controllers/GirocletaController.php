@@ -44,7 +44,7 @@ class GirocletaController extends Controller
     {
         $stationService = new StationService();
 
-        $station = $stationService->find($bot->userStorage()->get('station_id'));
+        $station = $stationService->getUserStation();
 
         if (! $station) {
 

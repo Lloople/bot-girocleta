@@ -23,12 +23,21 @@ class UserService
                 'telegram_id' => $botUser->getId()
             ],
             [
-                'name' => $botUser->getFirstName(),
+                'name' => $botUser->getFirstName() ?? $botUser->getId(),
                 'surname' => $botUser->getLastName(),
                 'username' => $botUser->getUsername(),
                 'email' => $botUser->getId().'@bot-girocleta.com',
                 'password' => Hash::make($botUser->getUsername().'-girocleta')
             ]
         );
+    }
+
+    public function setStation($stationId)
+    {
+        $user = auth()->user();
+
+        $user->station_id = $stationId;
+
+        return $user->save();
     }
 }

@@ -43,11 +43,13 @@ class Station
 
     public function getInfo()
     {
-        $text = "{$this->name} | {$this->bikes} 🚲";
+        $text = '';
 
         if (isset($this->distance)) {
-            $text .= ' | ' . number_format($this->distance, 2) . 'km';
+            $text .= number_format($this->distance, 2) . 'km | ';
         }
+
+        $text .= "{$this->bikes} 🚲 | {$this->parkings} 🅿️ - {$this->name}";
 
         return $text;
     }

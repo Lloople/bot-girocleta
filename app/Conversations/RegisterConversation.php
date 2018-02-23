@@ -3,6 +3,7 @@
 namespace App\Conversations;
 
 use App\Services\StationService;
+use App\Services\UserService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
@@ -18,9 +19,13 @@ class RegisterConversation extends Conversation
     /** @var \App\Services\StationService  */
     protected $stationService;
 
+    /** @var \App\Services\UserService  */
+    protected $userService;
+
     public function __construct()
     {
         $this->stationService = new StationService();
+        $this->userService = new UserService();
     }
 
     /**
@@ -41,7 +46,7 @@ class RegisterConversation extends Conversation
                 return $this->say(self::STATION_UNKNOWN);
             }
 
-            $this->bot->userStorage()->save(['station_id' => $this->station->id]);
+            $this->userService->setStation($this->station->id);
 
             return $this->say($this->station->messageInfo());
         });
