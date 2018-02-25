@@ -23,6 +23,11 @@ class Reminder extends Model
         'parkings' => 'Aparcaments lliures'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function getDaysStrAttribute()
     {
         $days = [];
@@ -55,4 +60,23 @@ class Reminder extends Model
 
         return $this;
     }
+
+    public function getTypeText()
+    {
+        return self::TYPES[$this->type];
+    }
+
+    public function getDaysList()
+    {
+        $message = '';
+
+        foreach(self::DAYS as $day => $translate) {
+            $icon = $this->$day ? '✅' : '❌';
+
+            $message .= "{$icon} {$translate}".PHP_EOL;
+        }
+
+        return $message;
+    }
+
 }

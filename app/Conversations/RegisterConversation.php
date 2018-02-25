@@ -24,7 +24,7 @@ class RegisterConversation extends Conversation
 
     public function __construct()
     {
-        $this->stationService = new StationService();
+        $this->stationService = app(StationService::class);
         $this->userService = new UserService();
     }
 

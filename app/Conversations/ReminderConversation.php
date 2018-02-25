@@ -42,7 +42,7 @@ class ReminderConversation extends Conversation
     {
         $this->reminderService = new ReminderService();
         $this->userService = new UserService();
-        $this->stationService = new StationService();
+        $this->stationService = app(StationService::class);
     }
 
     /**
@@ -118,9 +118,9 @@ class ReminderConversation extends Conversation
 
         return $this->ask($question, function (Answer $answer) {
 
-            $this->reminderDays = $answer->isInteractiveMessageReply()
-                ? $this->reminderService->parseDaysFromInput($answer->getValue())
-                : $this->reminderService->parseDaysFromInput($answer->getText());
+            $answerValue = $answer->isInteractiveMessageReply() ? $answer->getValue() : $answer->getText();
+
+            $this->reminderDays = $this->reminderService->parseDaysFromInput($answerValue);
 
             if (! $this->reminderDays->count()) {
                 return $this->say('Em sap greu, però no he entès quins dies vols que t\'ho recordi');
@@ -130,16 +130,14 @@ class ReminderConversation extends Conversation
 
             $this->say('Molt bé! Això era tot el que necessitàvem, aquest és el teu nou recordatori:');
 
-            $this->say("Recorda'm {$reminder->type_str} el {$reminder->days_str} a les {$reminder->time}");
-
-            $this->createReminder();
+            return $this->say("Recorda'm {$reminder->type_str} el {$reminder->days_str} a les {$reminder->time}");
         });
     }
 
     public function createReminder()
     {
         $reminder = new Reminder();
-        $reminder->user_id = $this->userService->getTelegramUser($this->bot->getUser()->getId())->id;
+        $reminder->user_id = $this->userService->findOrCreate($this->bot->getUser())->id;
         $reminder->station_id = $this->reminderStation->id;
         $reminder->type = $this->reminderType;
         $reminder->time = $this->reminderTime;
