@@ -17,6 +17,6 @@ $botman->hears('afegir recordatori|/reminder', 'App\Http\Controllers\GirocletaCo
 $botman->hears('els meus recordatoris|/reminders', 'App\Http\Controllers\GirocletaController@seeReminders');
 
 
-$botman->hears('/remove|/forget|(?:borrar?|treu(?:re)?|oblidar?) estaci[ó|o]', 'App\Http\Controllers\GirocletaController@forgetStation');
+$botman->hears('/remove|/forget|/delete|(?:borrar?|treu(?:re)?|oblidar?) usuari', 'App\Http\Controllers\GirocletaController@deleteUser');
 
 $botman->receivesLocation('App\Http\Controllers\GirocletaController@nearStations');

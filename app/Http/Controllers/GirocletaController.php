@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Conversations\DeleteUserConversation;
 use App\Conversations\ReminderConversation;
 use App\Conversations\RegisterConversation;
 use App\Girocleta\Station;
@@ -21,6 +22,7 @@ class GirocletaController extends Controller
     {
         $this->stationService = app(StationService::class);
     }
+
     /**
      * Start a conversation to register the user's main station.
      *
@@ -50,7 +52,6 @@ class GirocletaController extends Controller
      */
     public function checkStation(BotMan $bot)
     {
-
         $station = $this->stationService->getUserStation();
 
         if (! $station) {
@@ -65,16 +66,10 @@ class GirocletaController extends Controller
      * Forget about the current selected station.
      *
      * @param \BotMan\BotMan\BotMan $bot
-     *
-     * @return mixed
      */
-    public function forgetStation(BotMan $bot)
+    public function deleteUser(BotMan $bot)
     {
-        $bot->userStorage()->save(['station_id' => null]);
-        // TODO: re-fer aquesta comanda ja que cal borrar tot l'usuari i els seus recordatoris
-        $bot->reply("He oblidat quina era la teva estació seleccionada 😅");
-
-        return $bot->reply("Els recordatoris deixaran de funcionar fins que en tornis a escollir una amb /start");
+        $bot->startConversation(new DeleteUserConversation());
     }
 
     /**
