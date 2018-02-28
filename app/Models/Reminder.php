@@ -43,6 +43,11 @@ class Reminder extends Model
         return substr_replace($imploded, ' i ', strrpos($imploded, ', '), 2);
     }
 
+    public function getTimeAttribute()
+    {
+        return date('H:i', strtotime($this->attributes['time']));
+    }
+
     public function getTypeStrAttribute()
     {
         return self::TYPES[$this->type];
