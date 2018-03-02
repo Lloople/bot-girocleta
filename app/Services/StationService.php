@@ -93,10 +93,20 @@ class StationService
             ->take($limit);
     }
 
-    public function getUserStation()
+    /**
+     * @param string $text
+     *
+     * @return Station|null
+     */
+    public function findByText($text)
     {
-        return $this->find(auth()->user()->station_id);
+        return $this->all()->filter(function (Station $station) use ($text) {
+            similar_text(strtolower($station->name), strtolower($text), $percentage);
+
+            $station->percentage = $percentage;
+
+            return $percentage >= 50;
+
+        })->sortByDesc('percentage')->first();
     }
-
-
 }

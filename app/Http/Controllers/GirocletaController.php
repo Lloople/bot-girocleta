@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Conversations\DeleteUserConversation;
 use App\Conversations\RegisterConversation;
-use App\Conversations\ReminderConversation;
 use App\Girocleta\Station;
-use App\Models\Reminder;
 use App\Outgoing\OutgoingMessage;
 use App\Services\StationService;
 use BotMan\BotMan\BotMan;
@@ -23,9 +20,16 @@ class GirocletaController extends Controller
         $this->stationService = app(StationService::class);
     }
 
+    /**
+     * Shows current station information.
+     *
+     * @param \BotMan\BotMan\BotMan $bot
+     *
+     * @return mixed
+     */
     public function greetings(BotMan $bot)
     {
-        $station = $this->stationService->getUserStation();
+        $station = $this->stationService->find(auth()->user()->station_id);
 
         if ($station === null) {
             return $this->registerConversation($bot);
@@ -47,27 +51,38 @@ class GirocletaController extends Controller
     }
 
     /**
-     * Shows current station information.
+     * Show information about two stations and their distance.
      *
      * @param \BotMan\BotMan\BotMan $bot
+     * @param string $begin
+     * @param string $end
      *
      * @return mixed
      */
-    public function checkStation(BotMan $bot)
+    public function tripInformation(BotMan $bot, $begin, $end)
     {
-        $station = $this->stationService->getUserStation();
-
-        if (! $station) {
-
-            return $bot->reply('Sembla que encara no has seleccionat una estació. Escriu /start per fer-ho ara');
+        if (! $beginStation = $this->stationService->findByText($begin)) {
+            return $bot->reply("No he trobat cap estació semblant a '{$begin}'");
         }
 
-        return $bot->reply($station->messageInfo());
-    }
+        if (! $endStation = $this->stationService->findByText($end)) {
+            return $bot->reply("No he trobat cap estació semblant a '{$end}'");
+        }
 
-    public function tripInformation(BotMan $bot)
-    {
+        if ($beginStation->id === $endStation->id) {
+            return $bot->reply("Estàs allà mateix ¯\_(ツ)_/¯");
+        }
 
+        $distance = $endStation->location->getDistance(
+            $beginStation->location->latitude,
+            $beginStation->location->longitude
+        );
+
+        $message = new OutgoingMessage("Distancia aprox.: {$distance}km");
+        $message->addLink($beginStation->getInfo(), $beginStation->googleMapsLink())
+            ->addLink($endStation->getInfo(), $endStation->googleMapsLink());
+
+        return $bot->reply($message);
     }
 
 
