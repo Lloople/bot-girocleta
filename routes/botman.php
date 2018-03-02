@@ -12,7 +12,7 @@ $botman->receivesLocation('App\Http\Controllers\GirocletaController@nearStations
 
 $botman->hears('/reminders|els meus recordatoris', 'App\Http\Controllers\RemindersController@index');
 $botman->hears('/reminder|(?:afegir|definir|crear) recordatori', 'App\Http\Controllers\RemindersController@create');
-$botman->hears('/deletereminder|(?:esborrar?|treu[re]?|oblidar?) recordatori', 'App\Http\Controllers\RemindersController@destroy');
+$botman->hears('/reminderdelete|(?:esborrar?|treu[re]?|oblidar?) recordatori', 'App\Http\Controllers\RemindersController@destroy');
 
 $botman->hears('/remove|/forget|/delete|(?:borrar?|oblidar?) usuari', 'App\Http\Controllers\UsersController@destroy');
 
