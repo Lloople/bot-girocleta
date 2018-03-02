@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\StationService;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -53,6 +55,11 @@ class Reminder extends Model
         return self::TYPES[$this->type];
     }
 
+    public function getTypeStrLowerAttribute()
+    {
+        return strtolower($this->type_str);
+    }
+
     public function setDays(Collection $days)
     {
         $this->monday = $days->has('monday');
@@ -66,11 +73,6 @@ class Reminder extends Model
         return $this;
     }
 
-    public function getTypeText()
-    {
-        return self::TYPES[$this->type];
-    }
-
     public function getDaysList()
     {
         $message = '';
@@ -82,6 +84,15 @@ class Reminder extends Model
         }
 
         return $message;
+    }
+
+    public function asButton()
+    {
+        $station = app(StationService::class)->find($this->station_id);
+
+        $buttonText = "{$this->type_str} a {$station->name} a les {$this->time} els dies {$this->days_str}";
+
+        return Button::create($buttonText)->value($this->id);
     }
 
 }

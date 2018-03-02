@@ -31,13 +31,4 @@ class UserService
             ]
         );
     }
-
-    public function setStation($stationId)
-    {
-        $user = auth()->user();
-
-        $user->station_id = $stationId;
-
-        return $user->save();
-    }
 }
