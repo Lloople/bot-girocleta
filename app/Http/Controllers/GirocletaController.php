@@ -3,24 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Conversations\DeleteUserConversation;
-use App\Conversations\ReminderConversation;
 use App\Conversations\RegisterConversation;
+use App\Conversations\ReminderConversation;
 use App\Girocleta\Station;
 use App\Models\Reminder;
-use App\Services\StationService;
 use App\Outgoing\OutgoingMessage;
+use App\Services\StationService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Attachments\Location;
 
 class GirocletaController extends Controller
 {
 
-    /** @var \App\Services\StationService  */
+    /** @var \App\Services\StationService */
     protected $stationService;
 
     public function __construct()
     {
         $this->stationService = app(StationService::class);
+    }
+
+    public function greetings(BotMan $bot)
+    {
+        $station = $this->stationService->getUserStation();
+
+        if ($station === null) {
+            return $this->registerConversation($bot);
+        }
+
+        $bot->reply("Hola " . auth()->user()->name . "! 👋");
+        $bot->reply($station->messageInfo());
+
     }
 
     /**
@@ -31,16 +44,6 @@ class GirocletaController extends Controller
     public function registerConversation(BotMan $bot)
     {
         $bot->startConversation(new RegisterConversation());
-    }
-
-    /**
-     * Start a conversation to register new reminder.
-     *
-     * @param \BotMan\BotMan\BotMan $bot
-     */
-    public function reminderConversation(BotMan $bot)
-    {
-        $bot->startConversation(new ReminderConversation());
     }
 
     /**
@@ -62,15 +65,11 @@ class GirocletaController extends Controller
         return $bot->reply($station->messageInfo());
     }
 
-    /**
-     * Forget about the current selected station.
-     *
-     * @param \BotMan\BotMan\BotMan $bot
-     */
-    public function deleteUser(BotMan $bot)
+    public function tripInformation(BotMan $bot)
     {
-        $bot->startConversation(new DeleteUserConversation());
+
     }
+
 
     /**
      * Show the nearest locations to the user.
@@ -94,19 +93,4 @@ class GirocletaController extends Controller
         $bot->reply($message);
     }
 
-    public function seeReminders(BotMan $bot)
-    {
-        $reminders = auth()->user()->reminders;
-
-        $bot->reply('Aquests són els teus recordatoris');
-
-        $reminders->each(function (Reminder $reminder) use ($bot) {
-           $bot->reply(
-               "{$reminder->getTypeText()} a {$this->stationService->find($reminder->station_id)->name}".PHP_EOL.
-               "{$reminder->getDaysList()}".PHP_EOL.
-               "a les {$reminder->time}"
-           );
-        });
-
-    }
 }

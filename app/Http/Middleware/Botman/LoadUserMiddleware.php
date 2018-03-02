@@ -22,8 +22,6 @@ class LoadUserMiddleware implements Received
      */
     public function received(IncomingMessage $message, $next, BotMan $bot)
     {
-
-        // TODO: This doesn't work: Error retrieving user info: Bad Request: wrong user_id specified
         $user = (new UserService())->findOrCreate($bot->getDriver()->getUser($message));
 
         auth()->login($user);

@@ -3,7 +3,6 @@
 namespace App\Conversations;
 
 use App\Services\StationService;
-use App\Services\UserService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
@@ -19,13 +18,9 @@ class RegisterConversation extends Conversation
     /** @var \App\Services\StationService  */
     protected $stationService;
 
-    /** @var \App\Services\UserService  */
-    protected $userService;
-
     public function __construct()
     {
         $this->stationService = app(StationService::class);
-        $this->userService = new UserService();
     }
 
     /**
@@ -35,7 +30,7 @@ class RegisterConversation extends Conversation
      */
     public function run()
     {
-        $question = Question::create('Hola! Quina estació tens més a prop de casa?')
+        $question = Question::create('Cada cop que em saludis et donaré informació sobre l\'estació que hagis triat:')
             ->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
@@ -46,7 +41,8 @@ class RegisterConversation extends Conversation
                 return $this->say(self::STATION_UNKNOWN);
             }
 
-            $this->userService->setStation($this->station->id);
+            auth()->user()->station_id = $this->station->id;
+            auth()->user()->save();
 
             return $this->say($this->station->messageInfo());
         });

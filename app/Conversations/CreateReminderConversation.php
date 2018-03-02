@@ -5,12 +5,11 @@ namespace App\Conversations;
 use App\Models\Reminder;
 use App\Services\ReminderService;
 use App\Services\StationService;
-use App\Services\UserService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 
-class ReminderConversation extends Conversation
+class CreateReminderConversation extends Conversation
 {
 
     const REMINDER_UNKNOWN = 'No sé quina acció és aquesta.';
@@ -19,9 +18,6 @@ class ReminderConversation extends Conversation
 
     /** @var \App\Services\ReminderService  */
     protected $reminderService;
-
-    /** @var \App\Services\UserService  */
-    protected $userService;
 
     /** @var \App\Services\StationService  */
     protected $stationService;
@@ -41,7 +37,6 @@ class ReminderConversation extends Conversation
     public function __construct()
     {
         $this->reminderService = new ReminderService();
-        $this->userService = new UserService();
         $this->stationService = app(StationService::class);
     }
 
@@ -137,7 +132,7 @@ class ReminderConversation extends Conversation
     public function createReminder()
     {
         $reminder = new Reminder();
-        $reminder->user_id = $this->userService->findOrCreate($this->bot->getUser())->id;
+        $reminder->user_id = auth()->user()->id;
         $reminder->station_id = $this->reminderStation->id;
         $reminder->type = $this->reminderType;
         $reminder->time = $this->reminderTime;
