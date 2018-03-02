@@ -46,7 +46,7 @@ class Station
         $text = '';
 
         if (isset($this->distance)) {
-            $text .= number_format($this->distance, 2) . 'km | ';
+            $text .= "{$this->distance}km | ";
         }
 
         $text .= "{$this->bikes} 🚲 | {$this->parkings} 🅿️ - {$this->name}";
@@ -54,9 +54,9 @@ class Station
         return $text;
     }
 
-    public function messageInfo()
+    public function messageInfo($text = 'Aquí tens la informació sobre la teva estació')
     {
-        $message = new OutgoingMessage('Aquí tens la informació sobre la teva estació');
+        $message = new OutgoingMessage($text);
 
         return $message->addLink($this->getInfo(), $this->googleMapsLink());
     }

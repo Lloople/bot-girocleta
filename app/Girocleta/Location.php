@@ -43,6 +43,6 @@ class Location
 
         $a = sin($degLat/2) * sin($degLat/2) + cos(deg2rad($this->latitude)) * cos(deg2rad($latitude)) * sin($degLon/2) * sin($degLon/2);
 
-        return self::EARTH_RADIUS * (2 * asin(sqrt($a)));
+        return round(self::EARTH_RADIUS * (2 * asin(sqrt($a))), 2);
     }
 }
