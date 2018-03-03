@@ -11,7 +11,7 @@ $botman->hears('/start|(?:afegir|definir|canviar?) estaci[ó|o]', 'App\Http\Cont
 $botman->hears('(?:(?:vull)? anar de )?(.*) a (.*)', 'App\Http\Controllers\GirocletaController@tripInformation');
 $botman->receivesLocation('App\Http\Controllers\GirocletaController@nearStations');
 
-$botman->hears('^/reminders$|els meus recordatoris', 'App\Http\Controllers\RemindersController@index');
+$botman->hears('^/reminders$|els meus recordatoris|recordatoris', 'App\Http\Controllers\RemindersController@index');
 $botman->hears('^/reminder$|(?:afegir|definir|crear) recordatori', 'App\Http\Controllers\RemindersController@create');
 $botman->hears('^/reminderdelete$|(?:esborrar?|treu[re]?|oblidar?) recordatori', 'App\Http\Controllers\RemindersController@destroy');
 
