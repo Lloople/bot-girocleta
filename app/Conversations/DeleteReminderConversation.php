@@ -7,7 +7,9 @@ use App\Services\ReminderService;
 use App\Services\StationService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
+use Illuminate\Support\Facades\Log;
 
 class DeleteReminderConversation extends Conversation
 {
@@ -48,8 +50,14 @@ class DeleteReminderConversation extends Conversation
      */
     public function run()
     {
+        $reminders = auth()->user()->reminders;
+
+        if (! $reminders->count()) {
+            return $this->say('De moment no tens recordatoris, pots afegir-ne amb /reminder');
+        }
+
         $question = Question::create('Quin recordatori vols esborrar?')
-            ->addButtons(auth()->user()->reminders->map->asButton());
+            ->addButtons(auth()->user()->reminders->map->asButton()->toArray());
 
         return $this->ask($question, function (Answer $answer) {
 

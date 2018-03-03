@@ -12,7 +12,7 @@ class UsersController extends Controller
      *
      * @param \BotMan\BotMan\BotMan $bot
      */
-    public function deleteUser(BotMan $bot)
+    public function destroy(BotMan $bot)
     {
         $bot->startConversation(new DeleteUserConversation());
     }

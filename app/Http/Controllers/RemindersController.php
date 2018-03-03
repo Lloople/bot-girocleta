@@ -46,6 +46,11 @@ class RemindersController extends Controller
         $bot->startConversation(new CreateReminderConversation());
     }
 
+    /**
+     * Start a conversation to delete a reminder.
+     *
+     * @param \BotMan\BotMan\BotMan $bot
+     */
     public function destroy(BotMan $bot)
     {
         $bot->startConversation(new DeleteReminderConversation());
