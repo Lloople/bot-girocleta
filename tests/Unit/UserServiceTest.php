@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Unit;
-
 
 use App\Services\UserService;
 use BotMan\BotMan\Users\User;
@@ -17,7 +15,7 @@ class UserServiceTest extends TestCase
     /** @test */
     public function can_create_user_from_telegram_id()
     {
-        $botmanUser = new User('randomid', 'Han', 'Solo', 'hansolo');
+        $botmanUser = new User('hansoloid', 'Han', 'Solo', 'hansolo');
         
         $service = new UserService();
         
@@ -26,8 +24,8 @@ class UserServiceTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => 'Han',
             'surname' => 'Solo',
-            'email' => 'randomid@bot-girocleta.com',
-            'telegram_id' => 'randomid',
+            'email' => 'hansoloid@bot-girocleta.com',
+            'telegram_id' => 'hansoloid',
             'username' => 'hansolo',
         ]);
         
