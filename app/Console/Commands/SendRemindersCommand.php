@@ -29,16 +29,7 @@ class SendRemindersCommand extends Command
 
     public function handle()
     {
-        $day = date('l');
-
-        $reminders = Reminder::where('active', true)
-            ->where($day, true)
-            ->where('time', date('H:i'))
-            ->where('date_begin', '<=', date('Y-m-d H:i:s'))
-            ->where(function ($dateEnd) {
-                return $dateEnd->whereNull('date_end')
-                    ->orWhere('date_end', '>=', date('Y-m-d H:i:s'));
-            });
+        $reminders = $this->getReminders();
 
         if (! $reminders->count()) {
             return; // no reminders to fire right now
@@ -52,8 +43,19 @@ class SendRemindersCommand extends Command
                 return; // corrupted reminder, we need to do something about it
             }
 
-            // botman needs to know which user notify 🤔
-            $this->botman->say($station->messageInfo(), $reminder->user->user_id, TelegramDriver::class);
+            $this->botman->say($station->messageInfo(), $reminder->user->telegram_id, TelegramDriver::class);
         });
+    }
+
+    private function getReminders()
+    {
+        return Reminder::where('active', true)
+            ->where(date('l'), true)
+            ->where('time', date('H:i'))
+            ->where('date_begin', '<=', date('Y-m-d H:i:s'))
+            ->where(function ($dateEnd) {
+                return $dateEnd->whereNull('date_end')
+                    ->orWhere('date_end', '>=', date('Y-m-d H:i:s'));
+            });
     }
 }
