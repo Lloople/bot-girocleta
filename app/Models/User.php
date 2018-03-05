@@ -29,4 +29,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reminder::class);
     }
+
+    public function aliases()
+    {
+        return $this->hasMany(Alias::class);
+    }
 }
