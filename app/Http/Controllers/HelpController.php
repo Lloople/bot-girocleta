@@ -21,6 +21,7 @@ class HelpController extends Controller
      */
     public function index(BotMan $bot)
     {
+        // TODO: Load a markdown file and change the way we send this reply to use Markdown parser
        return $bot->reply('Aquí està la guia per fer servir el bot de la girocleta');
 
     }
