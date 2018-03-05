@@ -24,6 +24,10 @@ class RemindersController extends Controller
     {
         $reminders = auth()->user()->reminders;
 
+        if (! $reminders->count()) {
+            return $bot->reply('Encara no tens cap recordatori, pots afegir-ne un amb /reminder');
+        }
+
         $bot->reply('Aquests són els teus recordatoris');
 
         $reminders->each(function (Reminder $reminder) use ($bot) {
