@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Conversations\CreateReminderConversation;
 use App\Conversations\DeleteReminderConversation;
-use App\Conversations\ReminderConversation;
 use App\Models\Reminder;
 use App\Services\StationService;
 use BotMan\BotMan\BotMan;

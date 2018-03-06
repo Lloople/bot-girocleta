@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Services\StationService;
 use BotMan\BotMan\BotMan;
 
@@ -18,34 +17,19 @@ class FallbackController extends Controller
 
     /**
      * @param \BotMan\BotMan\BotMan $bot
-     * @param string $text
      *
      * @return mixed
      */
-    public function fallback(BotMan $bot, string $text)
+    public function index(BotMan $bot)
     {
-        $station = $this->getStationFromText($text);
+        $text = $bot->getMessage()->getText();
+
+        $station = $this->stationService->findByText($text);
 
         if (! $station) {
             return $bot->reply('No entenc què vols dir 😅');
         }
 
-        return $bot->reply($station->messageInfo());
-    }
-
-    /**
-     * @param string $text
-     *
-     * @return \App\Girocleta\Station|null
-     */
-    private function getStationFromText(string $text)
-    {
-        $alias = auth()->user()->alias()->where('alias', 'like', "%{$text}%");
-
-        if ($alias) {
-            return $this->stationService->find($alias->station_id);
-        }
-
-        return $this->stationService->findByText($text);
+        return $bot->reply($station->messageInfo("He trobat la següent estació a partir de '{$text}'"));
     }
 }

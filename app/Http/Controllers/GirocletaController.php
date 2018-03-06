@@ -47,7 +47,7 @@ class GirocletaController extends Controller
      */
     public function registerConversation(BotMan $bot)
     {
-        $bot->startConversation(new RegisterConversation());
+        return $bot->startConversation(new RegisterConversation());
     }
 
     /**

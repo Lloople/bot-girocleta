@@ -2,46 +2,20 @@
 
 namespace App\Conversations;
 
-use App\Models\Reminder;
-use App\Services\ReminderService;
 use App\Services\StationService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
-use Illuminate\Support\Facades\Log;
 
 class DeleteAliasConversation extends Conversation
 {
 
-    // TODO: Refactor this class
-
-    const REMINDER_UNKNOWN = 'No he trobat el recordatori.';
-
-    const CANT_UNDERSTAND = 'Ho sento, però no t\'he entès';
-
-    /** @var \App\Services\ReminderService  */
-    protected $reminderService;
-
-
-    /** @var \App\Services\StationService  */
+    /** @var \App\Services\StationService */
     protected $stationService;
-
-    /** @var string */
-    protected $reminderType;
-
-    /** @var \App\Girocleta\Station */
-    protected $reminderStation;
-
-    /** @var \Illuminate\Support\Carbon */
-    protected $reminderTime;
-
-    /** @var \Illuminate\Support\Collection */
-    protected $reminderDays;
 
     public function __construct()
     {
-        $this->reminderService = new ReminderService();
         $this->stationService = app(StationService::class);
     }
 
@@ -52,21 +26,21 @@ class DeleteAliasConversation extends Conversation
      */
     public function run()
     {
-        $reminders = auth()->user()->reminders;
+        $aliases = auth()->user()->aliases;
 
-        if (! $reminders->count()) {
-            return $this->say('De moment no tens recordatoris, pots afegir-ne amb /reminder');
+        if (! $aliases->count()) {
+            return $this->say('De moment no tens cap calias, pots afegir-ne amb /alias');
         }
 
-        $question = Question::create('Quin recordatori vols esborrar?')
-            ->addButtons(auth()->user()->reminders->map->asButton()->toArray());
+        $question = Question::create('Quin alias vols esborrar?')
+            ->addButtons($aliases->map->asButton()->toArray());
 
         return $this->ask($question, function (Answer $answer) {
 
-            $this->reminder = auth()->user()->reminders()->find($answer->getValue());
+            $this->alias = auth()->user()->aliases()->find($answer->getValue());
 
-            if (! $this->reminder) {
-                return $this->say(self::REMINDER_UNKNOWN);
+            if (! $this->alias) {
+                return $this->say("No he trobat l'alias que busques");
             }
 
             return $this->askConfirmation();
@@ -76,23 +50,25 @@ class DeleteAliasConversation extends Conversation
     public function askConfirmation()
     {
 
-        $question = Question::create('⚠️ Estàs segur que vols esborrar aquest recordatori? Aquesta acció no es pot desfer ⚠️')
+        $question = Question::create('⚠️ Estàs segur que vols esborrar aquest alias? Aquesta acció no es pot desfer ⚠️')
             ->addButtons([
                 Button::create('Si')->value('si'),
                 Button::create('No')->value('no'),
             ]);
+
         return $this->ask($question, function (Answer $answer) {
 
             $answerValue = $answer->isInteractiveMessageReply() ? $answer->getValue() : $answer->getText();
 
             if (strtolower($answerValue) == 'si') {
 
-                $this->reminder->delete();
+                $this->alias->delete();
 
-                $this->say("He esborrat el recordatori");
-            } else {
-                $this->say("El recordatori continuarà actiu una mica més 🙂");
+                return $this->say("He esborrat l'alias");
             }
+
+            return $this->say("Molt bé, no esborro res per ara.");
+
         });
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Conversations;
 
-use App\Models\Reminder;
-use App\Services\ReminderService;
+use App\Models\Alias;
 use App\Services\StationService;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
@@ -12,32 +11,17 @@ use BotMan\BotMan\Messages\Outgoing\Question;
 class CreateAliasConversation extends Conversation
 {
 
-    // TODO: Refactor this class
-    const REMINDER_UNKNOWN = 'No sé quina acció és aquesta.';
-
-    const CANT_UNDERSTAND = 'Ho sento, però no t\'he entès';
-
-    /** @var \App\Services\ReminderService  */
-    protected $reminderService;
-
     /** @var \App\Services\StationService  */
     protected $stationService;
 
     /** @var string */
-    protected $reminderType;
+    protected $alias;
 
     /** @var \App\Girocleta\Station */
-    protected $reminderStation;
-
-    /** @var \Illuminate\Support\Carbon */
-    protected $reminderTime;
-
-    /** @var \Illuminate\Support\Collection */
-    protected $reminderDays;
+    protected $station;
 
     public function __construct()
     {
-        $this->reminderService = new ReminderService();
         $this->stationService = app(StationService::class);
     }
 
@@ -48,13 +32,13 @@ class CreateAliasConversation extends Conversation
      */
     public function run()
     {
-        $question = Question::create('Què vols que et recordi?')->addButtons($this->reminderService->asButtons());
+        return $this->ask('Quin alias vols afegir?', function (Answer $answer) {
+            $this->alias = $answer->getText();
 
-        return $this->ask($question, function (Answer $answer) {
-            $this->reminderType = $answer->getValue();
+            $previousAlias = auth()->user()->aliases()->where('alias', 'like', "%{$this->alias}%")->first();
 
-            if (! $this->reminderService->find($this->reminderType)) {
-                return $this->say(self::REMINDER_UNKNOWN);
+            if ($previousAlias) {
+                return $this->say("Ja tens un alias associat a {$this->alias}");
             }
 
             return $this->askStation();
@@ -63,85 +47,24 @@ class CreateAliasConversation extends Conversation
 
     public function askStation()
     {
-        $question = Question::create('De quina parada voldràs la informació?')->addButtons($this->stationService->asButtons());
+        $question = Question::create('Quina estació vols associar a aquest alias?')->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
 
-            $this->reminderStation = $this->stationService->find($answer->getValue());
+            $this->station = $this->stationService->find($answer->getValue());
 
-            if (! $this->reminderStation) {
-                return $this->say('No sé quina estació és');
+            if (! $this->station) {
+                return $this->say('No sé quina estació és. No puc afegir el alias');
             }
 
-            return $this->askTime();
+            $alias = new Alias();
+            $alias->user_id = auth()->user()->id;
+            $alias->station_id = $this->station->id;
+            $alias->alias = $this->alias;
+
+            $alias->save();
+
+            return $this->say("He afegit el alias {$this->alias} que fa referència a l'estació {$this->station->name}");
         });
-    }
-
-    public function askType()
-    {
-
-        $question = Question::create('Què vols que et recordi?')->addButtons($this->reminderService->asButtons());
-
-        return $this->ask($question, function (Answer $answer) {
-            $this->reminderType = $answer->getValue();
-
-            if (! $this->reminderService->find($this->reminderType)) {
-                return $this->say(self::REMINDER_UNKNOWN);
-            }
-
-            return $this->askTime();
-        });
-    }
-
-    public function askTime()
-    {
-        return $this->ask('A quina hora vols que t\'ho recordi?', function (Answer $answer) {
-
-            $this->reminderTime = $this->reminderService->parseHoursFromInput($answer->getText());
-
-            if (! $this->reminderTime) {
-                return $this->say("No he entès la hora a la que vols que t'ho recordi, prova a escriure-ho així: ".date('H:i'));
-            }
-
-            return $this->askDays();
-        });
-    }
-
-    public function askDays()
-    {
-        $question = Question::create('Quins dies vols que t\'ho recordi? Si vols dies saltejats, escriu-los en comptes de triar un botó')
-            ->addButtons($this->reminderService->possibleDaysButtons());
-
-        return $this->ask($question, function (Answer $answer) {
-
-            $answerValue = $answer->isInteractiveMessageReply() ? $answer->getValue() : $answer->getText();
-
-            $this->reminderDays = $this->reminderService->parseDaysFromInput($answerValue);
-
-            if (! $this->reminderDays->count()) {
-                return $this->say('Em sap greu, però no he entès quins dies vols que t\'ho recordi');
-            }
-
-            $reminder = $this->createReminder();
-
-            $this->say('Molt bé! Això era tot el que necessitàvem, aquest és el teu nou recordatori:');
-
-            return $this->say("Recorda'm {$reminder->type_str} el {$reminder->days_str} a les {$reminder->time}");
-        });
-    }
-
-    public function createReminder()
-    {
-        $reminder = new Reminder();
-        $reminder->user_id = auth()->user()->id;
-        $reminder->station_id = $this->reminderStation->id;
-        $reminder->type = $this->reminderType;
-        $reminder->time = $this->reminderTime;
-
-        $reminder->setDays($this->reminderDays);
-
-        $reminder->save();
-
-        return $reminder;
     }
 }

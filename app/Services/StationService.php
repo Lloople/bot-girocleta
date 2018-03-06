@@ -100,7 +100,7 @@ class StationService
      */
     public function findByText($text)
     {
-        return $this->all()->filter(function (Station $station) use ($text) {
+        $station = $this->all()->filter(function (Station $station) use ($text) {
             similar_text(strtolower($station->name), strtolower($text), $percentage);
 
             $station->percentage = $percentage;
@@ -108,5 +108,17 @@ class StationService
             return $percentage >= 50;
 
         })->sortByDesc('percentage')->first();
+
+        if ($station) {
+            return $station;
+        }
+
+        $alias = auth()->user()->aliases()->where('alias', 'like', "%{$text}%")->first();
+
+        return $alias
+            ? $this->find($alias->station_id)
+            : null;
     }
+
+
 }

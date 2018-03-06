@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Conversations\CreateAliasConversation;
 use App\Conversations\DeleteAliasConversation;
-use App\Conversations\ReminderConversation;
 use App\Models\Alias;
 use App\Services\StationService;
 use BotMan\BotMan\BotMan;
@@ -28,10 +27,10 @@ class AliasesController extends Controller
             return $bot->reply('Encara no tens cap alias, pots afegir-ne un amb /alias');
         }
 
-        $bot->reply('Aquests són els teus recordatoris');
+        $bot->reply('Aquests són els teus alias');
 
         $aliases->each(function (Alias $alias) use ($bot) {
-            $bot->reply("{$alias->alias} = {$this->stationService->find($alias->station_id)->name}");
+            $bot->reply($alias->getInfo());
         });
 
     }
