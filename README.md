@@ -73,7 +73,7 @@ tens al costat de casa
 
 ### Afegir un recordatori
 
-Per afegir un recordatori cal seguir una sèries de pasos molt senzills que el bot t'anirà demanant
+Per afegir un recordatori cal seguir una sèrie de pasos molt senzills que el bot t'anirà demanant
 Tot comença amb:
 
 ```
@@ -132,6 +132,43 @@ Ens mostrarà un llistat amb els diferents recordatoris i, un cop en triem un, e
 confirmació per treure'l.
 
 Un recordatori esborrat no es pot recuperar, però és molt fàcil de tornar a crear si el volem
+
+## Alias
+
+Podem definir un alias per una estació en concret, d'aquesta manera podem demanar informació sobre
+una estació de manera molt més senzilla sense haver de recordar el seu nom
+
+### Crear un alias
+
+Un àlias només necessita saber quin text farà servir i a quina estació fa referència.
+
+```
+/alias
+afegir alias
+definir alias
+crear alias
+```
+
+### Llistat dels alias
+
+Podem veure una llista completa dels alias que hem donat d'alta
+
+```
+/aliases
+els meus alias
+veure alias
+```
+
+### Esborrar un alias
+
+Per esborrar un alias només cal dir quin volem eliminar i confirmar l'acció
+
+```
+/aliasdelete
+esborrar alias
+treure alias
+oblidar alias
+```
 
 ## Privacitat de l'usuari
 
