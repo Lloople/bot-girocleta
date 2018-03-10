@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Girocleta\Location;
 use App\Girocleta\Station;
 
 class StationService
@@ -100,6 +101,7 @@ class StationService
      */
     public function findByText($text)
     {
+        /** @var Station $station */
         $station = $this->all()->filter(function (Station $station) use ($text) {
             similar_text(strtolower($station->name), strtolower($text), $percentage);
 
@@ -110,14 +112,20 @@ class StationService
         })->sortByDesc('percentage')->first();
 
         if ($station) {
-            return $station;
+            return $station->foundByText();
         }
 
         $alias = auth()->user()->aliases()->where('alias', 'like', "%{$text}%")->first();
 
-        return $alias
-            ? $this->find($alias->station_id)
-            : null;
+        if ($alias && $station = $this->find($alias->station_id)) {
+            return $station->foundByAlias();
+        }
+
+        $addressLocation = new Location(4.9090, 3.2323); // TO-DO: (new GoogleMapsService)->getAddressLocation($text);
+
+        $station = $this->getNearStations($addressLocation->latitude, $addressLocation->longitude, 1)->first();
+
+        return $station ? $station->foundByAddress() : null;
     }
 
 

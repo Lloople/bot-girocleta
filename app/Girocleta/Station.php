@@ -3,6 +3,7 @@
 namespace App\Girocleta;
 
 use App\Outgoing\OutgoingMessage;
+use App\Services\GoogleMapsService;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 
 class Station
@@ -23,6 +24,9 @@ class Station
     /** @var int */
     public $bikes;
 
+    /** @var string */
+    public $foundBy;
+
     public static function createFromPayload($payload)
     {
         $station = new Station();
@@ -33,7 +37,7 @@ class Station
         $station->parkings = $payload['parkings'];
         $station->bikes = $payload['bikes'];
 
-        return $station;
+        return $station->foundById();
     }
 
     public function asButton()
@@ -78,7 +82,44 @@ class Station
 
     public function googleMapsLink()
     {
-        return "https://www.google.com/maps/search/?api=1&query={$this->location->getLatitude()},{$this->location->getLongitude()}";
+        return (new GoogleMapsService())->getMarker($this->location);
     }
+
+    public function foundById()
+    {
+        $this->foundBy = 'id';
+
+        return $this;
+    }
+
+    public function foundByText()
+    {
+        $this->foundBy = 'text';
+
+        return $this;
+    }
+
+    public function foundByAlias()
+    {
+        $this->foundBy = 'alias';
+
+        return $this;
+    }
+
+    public function foundByAddress()
+    {
+        $this->foundBy = 'address';
+
+        return $this;
+    }
+
+    public function foundByLocation()
+    {
+        $this->foundBy = 'location';
+
+        return $this;
+    }
+
+
 
 }
