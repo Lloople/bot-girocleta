@@ -8,7 +8,7 @@ use BotMan\BotMan\Messages\Outgoing\OutgoingMessage as BotManOutgoingMessage;
 class OutgoingMessage extends BotManOutgoingMessage
 {
 
-    protected $actions;
+    protected $actions = [];
 
     public function addLink($text, $url)
     {
@@ -20,7 +20,7 @@ class OutgoingMessage extends BotManOutgoingMessage
         return $this;
     }
 
-    public function getActions()
+    public function getActions(): array
     {
         return $this->actions;
     }

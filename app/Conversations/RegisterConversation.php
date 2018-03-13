@@ -30,7 +30,7 @@ class RegisterConversation extends Conversation
      */
     public function run()
     {
-        $question = Question::create('Cada cop que em saludis et donaré informació sobre l\'estació que hagis triat:')
+        $question = Question::create('Cada cop que em saludis et donaré informació sobre l\'estació que hagis triat, així 👇')
             ->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
@@ -44,7 +44,7 @@ class RegisterConversation extends Conversation
             auth()->user()->station_id = $this->station->id;
             auth()->user()->save();
 
-            return $this->say($this->station->messageInfo());
+            return $this->say($this->station->getVenueMessage(), $this->station->getVenuePayload());
         });
     }
 }

@@ -36,7 +36,8 @@ class GirocletaController extends Controller
         }
 
         $bot->reply("Hola " . auth()->user()->name . "! 👋");
-        $bot->reply($station->messageInfo());
+        $bot->reply("Aquí tens la informació de la teva estació 👇");
+        $bot->reply($station->getVenueMessage(), $station->getVenuePayload());
 
     }
 
@@ -78,11 +79,17 @@ class GirocletaController extends Controller
             $beginStation->location->longitude
         );
 
-        $message = new OutgoingMessage("Distancia aprox.: {$distance}km");
-        $message->addLink($beginStation->getInfo(), $beginStation->googleMapsLink())
-            ->addLink($endStation->getInfo(), $endStation->googleMapsLink());
+        if ($beginStation->wasFoundBy('address')) {
+            $bot->reply("L'estació més propera a \"{$begin}\" és {$beginStation->name}");
+        }
 
-        return $bot->reply($message);
+        if ($endStation->wasFoundBy('address')) {
+            $bot->reply("L'estació més propera a \"{$end}\" és {$endStation->name}");
+        }
+
+        $bot->reply("Distancia aprox: {$distance}km");
+        $bot->reply($beginStation->getVenueMessage(), $beginStation->getVenuePayload());
+        $bot->reply($endStation->getVenueMessage(), $endStation->getVenuePayload());
     }
 
 
@@ -94,18 +101,14 @@ class GirocletaController extends Controller
      */
     public function nearStations(BotMan $bot, Location $location)
     {
-
         $nearStations = $this->stationService->getNearStations($location->getLatitude(), $location->getLongitude());
 
-        $message = new OutgoingMessage("Aquestes són les {$nearStations->count()} estacions que tens més a prop");
+        $bot->reply("Aquestes són les {$nearStations->count()} estacions que tens més a prop");
 
-        $nearStations->each(function (Station $station) use ($message) {
+        $nearStations->each(function (Station $station) use ($bot) {
 
-            $message->addLink($station->getInfo(), $station->googleMapsLink());
-
+            $bot->reply($station->getVenueMessage(), $station->getVenuePayload());
         });
-
-        $bot->reply($message);
     }
 
 }

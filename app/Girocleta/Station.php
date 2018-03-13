@@ -3,7 +3,7 @@
 namespace App\Girocleta;
 
 use App\Outgoing\OutgoingMessage;
-use App\Services\GoogleMapsService;
+use BotMan\BotMan\Messages\Attachments\Location as BotManLocation;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 
 class Station
@@ -45,26 +45,6 @@ class Station
         return Button::create($this->name)->value($this->id);
     }
 
-    public function getInfo()
-    {
-        $text = '';
-
-        if (isset($this->distance)) {
-            $text .= "{$this->distance}km | ";
-        }
-
-        $text .= "{$this->bikes} 🚲 | {$this->parkings} 🅿️ - {$this->name}";
-
-        return $text;
-    }
-
-    public function messageInfo($text = 'Aquí tens la informació sobre la teva estació')
-    {
-        $message = new OutgoingMessage($text);
-
-        return $message->addLink($this->getInfo(), $this->googleMapsLink());
-    }
-
     /**
      * Load distance into location object.
      *
@@ -78,11 +58,6 @@ class Station
         $this->distance = $this->location->getDistance($latitude, $longitude);
 
         return $this;
-    }
-
-    public function googleMapsLink()
-    {
-        return (new GoogleMapsService())->getMarker($this->location);
     }
 
     public function foundById()
@@ -120,6 +95,37 @@ class Station
         return $this;
     }
 
+    public function wasFoundBy($found)
+    {
+        return $this->foundBy == $found;
+    }
 
+    public function getVenueMessage()
+    {
+        $message = new OutgoingMessage();
+
+        $message->withAttachment(new BotManLocation($this->location->latitude, $this->location->longitude));
+
+        return $message;
+    }
+
+    public function getVenuePayload()
+    {
+        return [
+            'title'   => $this->name,
+            'address' => $this->getVenueAddress(),
+        ];
+    }
+
+    public function getVenueAddress()
+    {
+        $text = "{$this->bikes} 🚲 - {$this->parkings} 🅿️";
+
+        if (isset($this->distance)) {
+            $text .= " - {$this->distance}km";
+        }
+
+        return $text;
+    }
 
 }
