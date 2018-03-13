@@ -3,18 +3,27 @@
 namespace App\Services;
 
 use App\Girocleta\Location;
+use GuzzleHttp\Client;
 
 class GoogleMapsService
 {
 
-    public function getMarker(Location $location)
-    {
-        return "https://www.google.com/maps/search/?api=1&query={$location->getLatitude()},{$location->getLongitude()}";
-    }
-
     public function getAddressLocation(string $query)
     {
-        // TO-DO Query the google maps API to get lat and lon of the address
-        // Also, we must restrict the searching area to Girona
+        $token = config('services.google_maps.token');
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$query}&key={$token}";
+
+        $client = new Client();
+        $response = $client->post($url);
+
+        $response = json_decode($response->getBody());
+
+        if (! $response->results || ! isset($response->results[0]->geometry->location)) {
+            return null;
+        }
+
+        $location = $response->results[0]->geometry->location;
+
+        return new Location($location->lat, $location->lng);
     }
 }

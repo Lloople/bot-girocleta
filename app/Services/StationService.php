@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Girocleta\Location;
 use App\Girocleta\Station;
 
 class StationService
@@ -81,7 +80,7 @@ class StationService
 
     /**
      * Get the nearest stations to the location.
-     * 
+     *
      * @param float $latitude
      * @param float $longitude
      * @param int $limit
@@ -107,7 +106,7 @@ class StationService
 
             $station->percentage = $percentage;
 
-            return $percentage >= 50;
+            return $percentage >= 60;
 
         })->sortByDesc('percentage')->first();
 
@@ -121,11 +120,19 @@ class StationService
             return $station->foundByAlias();
         }
 
-        $addressLocation = new Location(4.9090, 3.2323); // TO-DO: (new GoogleMapsService)->getAddressLocation($text);
+        if (! str_contains($text, 'girona')) {
+            $text .= ' girona';
+        }
+
+        $addressLocation = (new GoogleMapsService())->getAddressLocation($text);
+
+        if (! $addressLocation) {
+            return null;
+        }
 
         $station = $this->getNearStations($addressLocation->latitude, $addressLocation->longitude, 1)->first();
 
-        return $station ? $station->foundByAddress() : null;
+        return $station && $station->distance <= 4 ? $station->foundByAddress() : null;
     }
 
 
