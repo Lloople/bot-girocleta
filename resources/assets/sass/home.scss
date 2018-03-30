@@ -1,0 +1,38 @@
+body {
+  font-family: "Varela Round", sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+  background: linear-gradient(
+                  rgba(1, 170, 81, .65),
+                  rgba(1, 170, 81, .65)
+  ),
+  url("/img/background.jpg") no-repeat fixed 50% 0% / cover;
+}
+
+.main-container {
+  height: 100vh;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.content {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+.links a {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: white;
+  margin: 10px;
+}
+
+p {
+  @apply mb-4 px-8;
+}
