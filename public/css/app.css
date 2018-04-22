@@ -702,6 +702,16 @@ p {
   padding-right: 2rem;
 }
 
+.panel-info {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.panel-title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .list-reset {
   list-style: none;
   padding: 0;

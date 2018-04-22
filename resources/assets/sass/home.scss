@@ -36,3 +36,11 @@ body {
 p {
   @apply mb-4 px-8;
 }
+
+.panel-info {
+  @apply mb-8 text-left;
+}
+
+.panel-title {
+  @apply mb-8 text-center;
+}
