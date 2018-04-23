@@ -34,4 +34,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Alias::class);
     }
+
+    /**
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $this->aliases()->delete();
+        $this->reminders()->delete();
+
+        return parent::delete();
+    }
 }
