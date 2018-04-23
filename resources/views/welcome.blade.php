@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Girocleta Bot</title>
-    
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
-    
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
-<div class="container mt-8 text-center mx-auto my-0">
+@extends('layout')
+
+@section('content')
     <div class="logo">
         <img src="{{ url('img/bike.png') }}" alt="Girocleta Bike" width=" 300">
     </div>
@@ -25,7 +13,7 @@
                     Pots triar una estació com a <strong>preferida</strong>. D'aquesta manera cada cop que saludis
                     el bot et donarà la informació en temps real.
                 </p>
-                <img src="{{ asset('img/screenshots/start.png') }}" alt="Escull una parada">
+                <img src="{{ asset('img/screenshots/greetings.png') }}" alt="Escull una parada">
             </div>
             <div class="panel-info">
                 <h2 class="panel-title">Demana per una estació</h2>
@@ -54,8 +42,13 @@
                 </ul>
                 <img src="{{ asset('img/screenshots/reminders.png') }}" alt="Afegeix recordatoris">
             </div>
+            <div class="panel-info">
+                <h2 class="panel-title">Busca un itinerari</h2>
+                <p>Quan consultes el bot pots fer-ho demanant informació d'una estació origen i una de destí, per veure
+                    si podràs agafar i deixar bici sense problemes.</p>
+                <p>A més, el bot et mostrarà la distància aproximada que hi ha entre una parada i una altra</p>
+                <img src="{{ asset('img/screenshots/travel.png') }}" alt="Demana informació d'\origen i destí">
+            </div>
         </div>
     </div>
-</div>
-</body>
-</html>
+@endsection

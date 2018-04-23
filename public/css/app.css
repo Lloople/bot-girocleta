@@ -669,6 +669,17 @@ body {
   color: white;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(1, 170, 81, .65)), to(rgba(1, 170, 81, .65))), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
   background: linear-gradient(rgba(1, 170, 81, .65), rgba(1, 170, 81, .65)), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+html {
+  height: 100%;
 }
 
 .main-container {
@@ -710,6 +721,20 @@ p {
 .panel-title {
   margin-bottom: 2rem;
   text-align: center;
+}
+
+.panel-info ul li {
+  margin-bottom: .5rem;
+}
+
+footer {
+  margin-bottom: 2rem;
+  bottom: 0;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
 }
 
 .list-reset {

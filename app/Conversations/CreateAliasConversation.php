@@ -11,7 +11,7 @@ use BotMan\BotMan\Messages\Outgoing\Question;
 class CreateAliasConversation extends Conversation
 {
 
-    /** @var \App\Services\StationService  */
+    /** @var \App\Services\StationService */
     protected $stationService;
 
     /** @var string */
@@ -35,9 +35,7 @@ class CreateAliasConversation extends Conversation
         return $this->ask('Quin alias vols afegir?', function (Answer $answer) {
             $this->alias = $answer->getText();
 
-            $previousAlias = auth()->user()->aliases()->where('alias', 'like', "%{$this->alias}%")->first();
-
-            if ($previousAlias) {
+            if ($this->userAlreadyHasTheAlias()) {
                 return $this->say("Ja tens un alias associat a {$this->alias}");
             }
 
@@ -47,7 +45,8 @@ class CreateAliasConversation extends Conversation
 
     public function askStation()
     {
-        $question = Question::create('Quina estació vols associar a aquest alias?')->addButtons($this->stationService->asButtons());
+        $question = Question::create('Quina estació vols associar a aquest alias?')
+            ->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
 
@@ -57,14 +56,24 @@ class CreateAliasConversation extends Conversation
                 return $this->say('No sé quina estació és. No puc afegir el alias');
             }
 
-            $alias = new Alias();
-            $alias->user_id = auth()->user()->id;
-            $alias->station_id = $this->station->id;
-            $alias->alias = $this->alias;
-
-            $alias->save();
+            $this->createAlias();
 
             return $this->say("He afegit el alias {$this->alias} que fa referència a l'estació {$this->station->name}");
         });
+    }
+
+    private function userAlreadyHasTheAlias(): bool
+    {
+        return auth()->user()->aliases()->where('alias', 'like', "%{$this->alias}%")->first() !== null;
+    }
+
+    private function createAlias()
+    {
+        $alias = new Alias();
+        $alias->user_id = auth()->user()->id;
+        $alias->station_id = $this->station->id;
+        $alias->alias = $this->alias;
+
+        $alias->save();
     }
 }

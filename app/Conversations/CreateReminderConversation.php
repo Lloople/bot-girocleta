@@ -62,7 +62,7 @@ class CreateReminderConversation extends Conversation
 
     public function askStation()
     {
-        $question = Question::create('De quina parada voldràs la informació?')->addButtons($this->stationService->asButtons());
+        $question = Question::create('De quina estació voldràs la informació?')->addButtons($this->stationService->asButtons());
 
         return $this->ask($question, function (Answer $answer) {
 

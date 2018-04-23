@@ -8,6 +8,11 @@ body {
                   rgba(1, 170, 81, .65)
   ),
   url("/img/background.jpg") no-repeat fixed 50% 0% / cover;
+  @apply flex flex-col;
+}
+
+html {
+  @apply h-full;
 }
 
 .main-container {
@@ -43,4 +48,16 @@ p {
 
 .panel-title {
   @apply mb-8 text-center;
+}
+
+.panel-info ul li {
+  @apply mb-2;
+}
+
+footer {
+  @apply mb-8 pin-b;
+}
+
+footer a {
+  @apply text-white no-underline;
 }
