@@ -1,13 +1,10 @@
 body {
-  font-family: "Varela Round", sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
   color: white;
-  background: linear-gradient(
-                  rgba(1, 170, 81, .65),
-                  rgba(1, 170, 81, .65)
-  ),
-  url("/img/background.jpg") no-repeat fixed 50% 0% / cover;
+  background: linear-gradient(rgba(255, 221, 2, .65), rgba(1, 170, 79, .65)), url("/img/background.jpg") no-repeat fixed 50% 0% / cover;
+  background-attachment: fixed;
   @apply flex flex-col;
 }
 
@@ -24,11 +21,6 @@ html {
 .content {
   margin: 0 auto;
   text-align: center;
-}
-
-.logo {
-  margin-right: 40px;
-  margin-bottom: 20px;
 }
 
 .links a {

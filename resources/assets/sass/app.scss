@@ -2,6 +2,51 @@
 
 @tailwind components;
 
+header {
+  padding: .5em;
+  background: rgba(104, 104, 104, 0.6);
+  display: flex;
+  justify-content: space-between;
+}
+
+.panel-info p {
+  text-align: justify;
+}
+
+.logo-title {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+}
+
+.logo-title .title {
+  color: white;
+  margin-left: 0.9em;
+  text-align: center;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu > a {
+  padding: 20px 30px;
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+}
+
+.menu > a:hover, .menu > a.active {
+  color: #ffdd00;
+}
+
+
 @import 'home';
 
 @tailwind utilities;
