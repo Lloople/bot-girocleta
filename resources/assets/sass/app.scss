@@ -9,9 +9,7 @@ header {
   justify-content: space-between;
 }
 
-.panel-info p {
-  text-align: justify;
-}
+
 
 .logo-title {
   text-align: center;
@@ -46,6 +44,13 @@ header {
   color: #ffdd00;
 }
 
+footer {
+  @apply mb-8 pin-b;
+}
+
+footer a {
+  @apply text-white no-underline;
+}
 
 @import 'home';
 

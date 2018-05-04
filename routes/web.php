@@ -1,11 +1,15 @@
 <?php
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
 
-Route::view('about', 'about')->name('about');
+    [$left, $right] = collect(glob(resource_path('views/information').'/*.php'))->split(2);
 
-Route::view('legal', 'legal')->name('legal');
+    return view('pages.home', compact('left', 'right'));
+
+})->name('home');
+
+Route::view('about', 'pages.about')->name('about');
+
+Route::view('legal', 'pages.legal')->name('legal');
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
-
-Route::get('/botman/tinker', 'BotManController@tinker');

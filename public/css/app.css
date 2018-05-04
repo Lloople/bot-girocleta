@@ -673,10 +673,6 @@ header {
           justify-content: space-between;
 }
 
-.panel-info p {
-  text-align: justify;
-}
-
 .logo-title {
   text-align: center;
   display: -webkit-box;
@@ -726,13 +722,23 @@ header {
   color: #fd0;
 }
 
+footer {
+  margin-bottom: 2rem;
+  bottom: 0;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
   color: white;
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 221, 2, .65)), to(rgba(1, 170, 79, .65))), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
-  background: linear-gradient(rgba(255, 221, 2, .65), rgba(1, 170, 79, .65)), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 221, 2, .9)), to(rgba(1, 170, 79, .9))), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
+  background: linear-gradient(rgba(255, 221, 2, .9), rgba(1, 170, 79, .9)), url("/img/background.jpg") no-repeat fixed 50% 0%/cover;
   background-attachment: fixed;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -773,11 +779,6 @@ p {
   padding-right: 2rem;
 }
 
-.panel-info {
-  margin-bottom: 2rem;
-  text-align: left;
-}
-
 .panel-title {
   margin-bottom: 2rem;
   text-align: center;
@@ -787,14 +788,17 @@ p {
   margin-bottom: .5rem;
 }
 
-footer {
-  margin-bottom: 2rem;
-  bottom: 0;
+.panel-content {
+  border-radius: 10px;
+  padding: 10px 5px;
 }
 
-footer a {
-  color: #fff;
-  text-decoration: none;
+.panel-info {
+  margin: 15px;
+}
+
+.panel-info p {
+  text-align: justify;
 }
 
 .list-reset {
