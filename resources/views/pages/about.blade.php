@@ -7,5 +7,13 @@
         <a href="https://github.com/Lloople/bot-girocleta.git" target="_blank">GitHub</a>
         de forma oberta i gratuïta.
     </p>
-    <p>És un projecte sense ànim de lucre, i es va desenvolupar com a introducció al món dels <code>Chatbots</code>.</p>
+    <p>És un projecte sense ànim de lucre, i es va desenvolupar per aprenentage i introducció al món dels <code>Chatbots</code>.</p>
+    <p>Aquest projecte fa servir les següents eines o llibreries</p>
+    <ul>
+        <li>Laravel PHP Framework 5.6</li>
+        <li>BotMan Framework</li>
+        <li>Telegram API</li>
+        <li>MySQL 5.7</li>
+        <li>TailWind CSS</li>
+    </ul>
 @endsection

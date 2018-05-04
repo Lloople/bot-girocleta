@@ -10,7 +10,7 @@
                 <li>Nom del perfil de Telegram</li>
                 <li>Cognom del perfil de Telegram</li>
             </ul>
-            <p>El bot ofereix l'opció d'esborrar totes les dades relacionades amb el nostre usuari.</p>
+            <p>El bot ofereix l'opció d'esborrar totes les dades relacionades amb el nostre usuari, només cal dir-li <code>Esborrar usuari</code>.</p>
         </div>
     </div>
 @endsection

@@ -673,6 +673,35 @@ header {
           justify-content: space-between;
 }
 
+.menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
+}
+
+.menu > a {
+  padding: 20px 30px;
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+}
+
+.menu > a:hover,
+.menu > a.active {
+  color: #fd0;
+}
+
+.menu .icon {
+  display: none;
+}
+
 .logo-title {
   text-align: center;
   display: -webkit-box;
@@ -698,38 +727,38 @@ header {
   text-align: center;
 }
 
-.menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+@media screen and (max-width: 1024px) {
+  .menu > a {
+    padding: 20px 5px;
+  }
 }
 
-.menu > a {
-  padding: 20px 30px;
-  text-decoration: none;
-  color: white;
-  text-transform: uppercase;
-}
+@media screen and (max-width: 600px) {
+  .menu a {
+    display: none;
+  }
 
-.menu > a:hover,
-.menu > a.active {
-  color: #fd0;
-}
+  .menu a.icon {
+    display: block;
+  }
 
-footer {
-  margin-bottom: 2rem;
-  bottom: 0;
-}
+  header {
+    display: block;
+  }
 
-footer a {
-  color: #fff;
-  text-decoration: none;
+  .menu.responsive {
+    position: relative;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  .menu.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
 }
 
 body {

@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @yield('styles')
+    <style>
+    
+    </style>
 </head>
 <body>
 <header>
@@ -20,6 +23,7 @@
         </h4>
     </a>
     <nav class="menu">
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>
         <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">Sobre el projecte</a>
         <a href="{{ route('legal') }}" class="{{ request()->routeIs('legal') ? 'active' : '' }}">Informació legal</a>
         <a href="http://girocleta.cat" target="_blank">Web oficial de la Girocleta</a>
@@ -31,5 +35,16 @@
 </div>
 
 @yield('scripts')
+
+<script>
+    function responsiveMenu() {
+        let x = document.querySelector(".menu");
+        if (x.className === "menu") {
+            x.className += " responsive";
+        } else {
+            x.className = "menu";
+        }
+    }
+</script>
 </body>
 </html>
