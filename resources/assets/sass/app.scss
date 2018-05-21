@@ -2,6 +2,10 @@
 
 @tailwind components;
 
+* {
+  font-weight: bold !important;
+}
+
 @import "header";
 
 @import 'home';

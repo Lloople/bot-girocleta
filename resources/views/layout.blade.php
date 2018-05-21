@@ -27,7 +27,6 @@
         <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">Sobre el projecte</a>
         <a href="{{ route('legal') }}" class="{{ request()->routeIs('legal') ? 'active' : '' }}">Informació legal</a>
         <a href="http://girocleta.cat" target="_blank">Web oficial de la Girocleta</a>
-        <a href="https://davidllop.com" target="_blank">Sobre el desenvolupador</a>
     </nav>
 </header>
 <div class="container mt-8 text-center mx-auto my-0 flex-1">

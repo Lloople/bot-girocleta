@@ -662,6 +662,10 @@ button,
   }
 }
 
+* {
+  font-weight: bold !important;
+}
+
 header {
   padding: .5em;
   background: rgba(104, 104, 104, .6);
