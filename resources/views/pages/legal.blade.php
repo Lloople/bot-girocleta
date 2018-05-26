@@ -11,11 +11,15 @@
                 <li>Cognom del perfil de Telegram</li>
                 <li>Identificador ùnic del perfil de Telegram</li>
             </ul>
-            <p>El bot ofereix l'opció d'esborrar totes les dades relacionades amb el nostre usuari, només cal dir-li <code>Esborrar usuari</code> i ens demanarà confirmació.</p>
+            <p>Aquestes dades no es comparteixen amb tercers i són totalment necessàries pel funcionament del bot i
+                per oferir una experiència més personalitzada a l'usuari.</p>
+            <h1 class="mb-8 text-center">Esborrar les meves dades</h1>
+            <p>El bot ofereix l'opció d'esborrar totes les dades relacionades amb el nostre usuari, només cal dir-li
+                <code>Esborrar usuari</code> i ens demanarà confirmació.</p>
             <p class="text-center">
                 <img src="{{ asset('img/screenshots/delete.png') }}" alt="Esborrar usuari">
             </p>
-
+        
         </div>
     </div>
 @endsection

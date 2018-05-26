@@ -13,11 +13,11 @@
             </p>
             <p>Aquest projecte fa servir les següents eines o llibreries</p>
             <ul>
-                <li>Laravel PHP Framework 5.6</li>
-                <li>BotMan Framework</li>
-                <li>Telegram API</li>
-                <li>MySQL 5.7</li>
-                <li>TailWind CSS</li>
+                <li><a class="no-underline" href="https://laravel.com">Laravel PHP Framework 5.6</a></li>
+                <li><a class="no-underline" href="https://botman.io">BotMan Framework</a></li>
+                <li><a class="no-underline" href="https://core.telegram.org/bots/api">Telegram API</a></li>
+                <li><a class="no-underline" href="https://mysql.com">MySQL 5.7</a></li>
+                <li><a class="no-underline" href="https://tailwindcss.com">TailWind CSS</a></li>
             </ul>
         </div>
     </div>
