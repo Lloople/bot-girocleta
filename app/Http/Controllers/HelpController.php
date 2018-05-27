@@ -8,6 +8,7 @@ use App\Outgoing\OutgoingMessage;
 use App\Services\StationService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Attachments\Location;
+use Illuminate\Support\Facades\Log;
 
 class HelpController extends Controller
 {
@@ -21,9 +22,10 @@ class HelpController extends Controller
      */
     public function index(BotMan $bot)
     {
-        // TODO: Load a markdown file and change the way we send this reply to use Markdown parser
-       return $bot->reply('Aquí està la guia per fer servir el bot de la girocleta');
 
+        return $bot->reply(file_get_contents(resource_path('help.md')), [
+            'parse_mode' => 'Markdown'
+        ]);
     }
 
 }

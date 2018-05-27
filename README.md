@@ -1,6 +1,3 @@
-<p align="center"><img height="188" width="198" src="http://girocleta.cat/Portals/0/girocleta_logo.jpg"></p>
-<h1 align="center">Bot de Telegram per la Girocleta</h1>
-
 ## Sobre el projecte
 
 Aquest projecte és sense ànim de lucre, amb finalitat educativa i de benefici social.
@@ -181,12 +178,4 @@ borrar usuari
 oblidar usuari
 ```
 
-Després d'acceptar la confirmació, esborrarà tots els nostres recordatoris i la informació 
-personal del nostre compte.
-
-## Futures funcionalitats
-
-- Veure les noticies de la web directament al bot
-- Rebre avisos de noves noticies
-- Establir recordatori del pagament anual del servei
-- Veure les preguntes freqüents de la web
+Després d'acceptar la confirmació, esborrarà tots els nostres recordatoris i la informació personal del nostre compte.

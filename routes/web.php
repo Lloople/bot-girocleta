@@ -12,4 +12,4 @@ Route::view('about', 'pages.about')->name('about');
 
 Route::view('legal', 'pages.legal')->name('legal');
 
-Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+Route::match(['get', 'post'], '/bot', 'BotManController@handle');

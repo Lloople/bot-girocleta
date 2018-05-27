@@ -19,6 +19,6 @@ $botman->hears('/aliases|els meus alias|veure alias', 'App\Http\Controllers\Alia
 $botman->hears('/alias$|(?:afegir|definir|crear?) alias', 'App\Http\Controllers\AliasesController@create');
 $botman->hears('^/aliasdelete|(?:esborrar?|treu[re]?|oblidar?) alias', 'App\Http\Controllers\AliasesController@destroy');
 
-$botman->hears('/remove|/forget|/delete|(?:borrar?|oblidar?) usuari', 'App\Http\Controllers\UsersController@destroy');
+$botman->hears('/remove$|/forget$|/delete$|(?:borrar?|oblidar?) usuari', 'App\Http\Controllers\UsersController@destroy');
 
 $botman->fallback('App\Http\Controllers\FallbackController@index');
