@@ -9,9 +9,9 @@
                 <a href="https://github.com/Lloople/bot-girocleta.git" target="_blank">GitHub</a>
                 de forma oberta i gratuïta.
             </p>
-            <p>És un projecte sense ànim de lucre, i es va desenvolupar per aprenentage i introducció al món dels <code>Chatbots</code>.
+            <p>És un projecte sense ànim de lucre, i es va desenvolupar per aprenentatge i introducció al món dels <code>Chatbots</code>.
             </p>
-            <p>Aquest projecte fa servir les següents eines o llibreries</p>
+            <p>Aquest projecte fa servir les següents eines i/o llibreries</p>
             <ul>
                 <li><a class="no-underline" href="https://laravel.com">Laravel PHP Framework 5.6</a></li>
                 <li><a class="no-underline" href="https://botman.io">BotMan Framework</a></li>
