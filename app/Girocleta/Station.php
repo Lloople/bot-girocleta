@@ -40,6 +40,9 @@ class Station
         return $station->foundById();
     }
 
+    /**
+     * @return Button
+     */
     public function asButton()
     {
         return Button::create($this->name)->value($this->id);
