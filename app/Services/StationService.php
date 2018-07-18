@@ -35,7 +35,7 @@ class StationService
      */
     private function getStations()
     {
-        $html = file_get_contents('http://girocleta.cat');
+        $html = $this->query();
 
         $locations = preg_match_all(self::REGEX_LOCATION, $html, $matches) ? $matches[1] : [];
 
@@ -51,9 +51,19 @@ class StationService
                 'parkings' => $matches['parkings'][$index],
                 'bikes' => $matches['bikes'][$index],
                 'latitude' => $latitude,
-                'longitude' => $longitude
+                'longitude' => $longitude,
             ];
         }, array_keys($locations));
+    }
+
+    private function query()
+    {
+        return file_get_contents('https://www.girocleta.cat', false, stream_context_create([
+            "ssl" => [
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+            ],
+        ]));
     }
 
     /**
@@ -84,6 +94,7 @@ class StationService
      * @param float $latitude
      * @param float $longitude
      * @param int $limit
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getNearStations(float $latitude, float $longitude, int $limit = 3)
@@ -134,6 +145,5 @@ class StationService
 
         return $station && $station->distance <= 4 ? $station->foundByAddress() : null;
     }
-
 
 }
