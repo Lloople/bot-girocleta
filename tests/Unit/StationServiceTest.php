@@ -16,8 +16,7 @@ class StationServiceTest extends TestCase
     {
         $stations = (new StationService())->all();
 
+        dump($stations);
         $this->assertNotEmpty($stations);
     }
-
-
 }

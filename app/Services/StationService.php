@@ -9,8 +9,7 @@ class StationService
 
     private $stations;
 
-    const REGEX_LOCATION = '/addMarker\(\d+,(\-?\d+(?:\.\d+)?,\s*\-?\d+(?:\.\d+)?),\d+,\d+\);/';
-    const REGEX_STATION = "/html\[\d+\]=\'<div.*>(?P<id>[0-9]+)- ?(?<name>.*)<\/div><div>.*<\/div><div>Bicis lliures: (?<bikes>\d+).*Aparcaments lliures: (?<parkings>\d+).*\';/";
+    const REGEX = "/addMarker\((?<latitude>\-?\d+(?:\.\d+)?),(?<longitude>\-?\d+(?:\.\d+)?).*>(?<id>\d+)-\s?(?<name>.*)<\/div><div>(?<address>.*)<\/div><div>Bicis lliures: (?<bikes>\d+)<\/div><div>Aparcaments lliures: (?<parkings>\d+)<\/div><\/div>'\);/";
 
     /**
      * Load all the station just one time per instance.
@@ -35,25 +34,19 @@ class StationService
      */
     private function getStations()
     {
-        $html = $this->query();
+        preg_match_all(self::REGEX, $this->query(), $matches);
 
-        $locations = preg_match_all(self::REGEX_LOCATION, $html, $matches) ? $matches[1] : [];
-
-        preg_match_all(self::REGEX_STATION, $html, $matches);
-
-        return array_map(function ($index) use ($matches, $locations) {
-
-            [$latitude, $longitude] = explode(',', $locations[$index]);
+        return array_map(function ($index) use ($matches) {
 
             return [
                 'id' => $matches['id'][$index],
                 'name' => $matches['name'][$index],
                 'parkings' => $matches['parkings'][$index],
                 'bikes' => $matches['bikes'][$index],
-                'latitude' => $latitude,
-                'longitude' => $longitude,
+                'latitude' => $matches['latitude'][$index],
+                'longitude' => $matches['longitude'][$index],
             ];
-        }, array_keys($locations));
+        }, array_keys($matches[0]));
     }
 
     private function query()
