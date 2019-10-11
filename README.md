@@ -1,8 +1,14 @@
+<p align="center">
+<img width="400" height="100" src="https://raw.githubusercontent.com/Lloople/bot-girocleta/master/art/logo.png" alt="Girocleta logo" />
+</p>
+
 ## Sobre el projecte
 
 Aquest projecte és sense ànim de lucre, amb finalitat educativa i de benefici social.
 Va nèixer a partir d'una necessitat que sentia per mi mateix i va guanyar força a mesura
 que ho comentava amb altres usuaris del servei.
+
+❤️ Logo by [Caneco](https://twitter.com/caneco) ❤️
 
 
 # Com interactuar amb el bot de la Girocleta
@@ -47,14 +53,14 @@ afegir estació
 
 ### Informació sobre recorreguts
 
-El bot de la girocleta et pot donar informació sobre dues estacions, et diu 
+El bot de la girocleta et pot donar informació sobre dues estacions, et diu
 les bicis i les parades de cadascuna i la distància que hi ha entre elles
 ```
 vull anar de Ramon Folch a Catalunya
 de lluis pericot a eixample
 ```
 
-No cal dir el nom de l'estació correcte al 100%, però si força semblant per que el 
+No cal dir el nom de l'estació correcte al 100%, però si força semblant per que el
 bot el pugui reconèixer, per exemple `Ramon F` per Ramon Folch, o `Ramon B` per Ramon Berenguer
 
 ### Estacions més properes
