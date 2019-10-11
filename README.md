@@ -8,7 +8,8 @@ Aquest projecte és sense ànim de lucre, amb finalitat educativa i de benefici 
 Va nèixer a partir d'una necessitat que sentia per mi mateix i va guanyar força a mesura
 que ho comentava amb altres usuaris del servei.
 
-Criado por [David Llop](https://twitter.com/Lloople), e logótipo por [Caneco](https://twitter.com/caneco)
+❤️ Logo by [Caneco](https://twitter.com/caneco) ❤️
+
 
 # Com interactuar amb el bot de la Girocleta
 
