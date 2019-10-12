@@ -1,6 +1,6 @@
 header {
   padding: .5em;
-  background: rgba(104, 104, 104, 0.6);
+  background-color: transparent;
   display: flex;
   justify-content: space-between;
 }
@@ -21,7 +21,7 @@ header {
 }
 
 .menu > a:hover, .menu > a.active {
-  color: #ffdd00;
+  color: black;
 }
 
 .menu .icon {

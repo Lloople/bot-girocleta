@@ -16,11 +16,9 @@
 <header>
     <a href="{{ route('home') }}" class="logo-title">
         <div class="logo">
-            <img src="{{ url('img/bike.png') }}" alt="Girocleta Bike" width="100">
+            <img src="{{ url('img/logo.png') }}" alt="Girocleta Bike" width="200">
         </div>
-        <h4 class="title">
-            GIROCLETA<br>(Bot Telegram)
-        </h4>
+        
     </a>
     <nav class="menu">
         <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>

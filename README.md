@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" height="100" src="https://raw.githubusercontent.com/Lloople/bot-girocleta/master/art/logo.png" alt="Girocleta logo" />
+<img width="400" height="100" src="https://raw.githubusercontent.com/Lloople/bot-girocleta/master/public/img/logo.png" alt="Girocleta logo" />
 </p>
 
 ## Sobre el projecte
