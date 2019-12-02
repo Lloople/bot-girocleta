@@ -52,9 +52,9 @@ class StationService
     private function query()
     {
         return file_get_contents('https://www.girocleta.cat', false, stream_context_create([
-            "ssl" => [
-                "verify_peer" => false,
-                "verify_peer_name" => false,
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
             ],
         ]));
     }
