@@ -51,7 +51,7 @@ class StationService
 
     private function query()
     {
-        return file_get_contents('https://www.girocleta.cat', false, stream_context_create([
+        return file_get_contents('https://www.girocleta.cat/mapaestacions.aspx', false, stream_context_create([
             'ssl' => [
                 'verify_peer' => false,
                 'verify_peer_name' => false,
